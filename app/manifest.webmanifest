@@ -1,0 +1,25 @@
+{
+  "name": "Atelier d'harmonie",
+  "short_name": "Harmonie",
+  "description": "Cours d'écriture et d'harmonie à 4 voix : cours, cahier d'exercices sur la portée, chiffrage, chasse aux fautes, cadences à l'oreille, quiz.",
+  "lang": "fr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f4f6f8",
+  "theme_color": "#1f4e8c",
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

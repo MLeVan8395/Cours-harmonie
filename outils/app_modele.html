@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Atelier d'harmonie</title>
+<meta name="theme-color" content="#1f4e8c">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Harmonie">
+<style>
+:root{
+  --paper:#f4f6f8; --sheet:#fff; --ink:#1c2633; --muted:#5d6b7c; --line:#cfd6df;
+  --accent:#1f4e8c; --accent-soft:#e3ecf7; --red:#c0392b; --green:#1e7b34; --amber:#b7791f;
+  --bleu:#1f4e8c; --gris:#666;
+  --font:Verdana, Geneva, "DejaVu Sans", sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.55}
+header{background:var(--sheet);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.top{max-width:1000px;margin:0 auto;padding:12px 18px 0;display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;justify-content:space-between}
+h1{font-size:1.45rem;margin:0}
+h1 em{font-style:italic;font-weight:500;color:var(--accent)}
+.score{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.score b{color:var(--ink)}
+.reglages{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:.8rem;color:var(--muted)}
+select{font:inherit;font-size:.85rem;padding:.2em .4em;border:1px solid #bbb;border-radius:6px;background:#fff;color:var(--ink)}
+nav{max-width:1000px;margin:0 auto;padding:6px 18px 0;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav a{flex:0 0 auto;padding:8px 12px 10px;color:var(--muted);text-decoration:none;font-weight:700;border-bottom:3px solid transparent;font-size:.9rem}
+nav a[aria-current="page"]{color:var(--accent);border-bottom-color:var(--accent)}
+nav a:hover{color:var(--ink)}
+button{font:inherit;cursor:pointer}
+button:focus-visible,a:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.ghost{font-size:.82rem;border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:999px;padding:.3em .9em}
+main{max-width:1000px;margin:0 auto;padding:18px 18px 70px}
+.panel{display:none}.panel.on{display:block}
+h2{color:var(--accent);font-size:1.4rem;margin:.2em 0 .4em}
+.lead{color:var(--muted);margin:0 0 16px;max-width:70ch}
+.navchap{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 10px}
+.navchap select{flex:1;min-width:14em;font-size:.95rem;padding:.35em .5em}
+.navchap button{border:1px solid var(--line);background:#fff;border-radius:8px;padding:.35em .8em}
+.feuille{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:6px 22px 22px}
+.chap h2{border-bottom:3px solid var(--accent);padding-bottom:.2em}
+figure{margin:1.2em 0}
+figure img{max-width:100%;height:auto;display:block}
+.lecteur{display:flex;gap:.6em;align-items:center;margin-top:.3em}
+.jouer{font-size:.85em;padding:.25em .9em;border-radius:999px;border:1px solid var(--accent);background:#fff;color:var(--accent)}
+.jouer.actif{background:var(--accent);color:#fff}
+.midi{font-size:.75em;color:var(--muted)}
+details.corrige{margin:.2em 0 1.5em}
+details.corrige summary{cursor:pointer;color:var(--accent);font-size:.9em}
+table{border-collapse:collapse;font-size:.9em;display:block;overflow-x:auto}td,th{border:1px solid #ccc;padding:4px 8px}
+code{background:#f0f0f0;padding:0 .3em;border-radius:4px}
+.suite{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.suite button{border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:999px;padding:.4em 1em;font-size:.9rem}
+.progres{display:flex;align-items:center;gap:12px;margin:0 0 12px;font-size:.9rem}
+.barre-p{flex:1;height:10px;border-radius:5px;background:#e3e8ee;overflow:hidden}
+.barre-p span{display:block;height:100%;background:var(--green);width:0;transition:width .3s}
+#etat{font-size:.8em;color:var(--muted)}
+/* entraînements */
+.carte{background:var(--sheet);border:1px solid var(--line);border-radius:12px;padding:16px 18px;max-width:760px}
+.carte .ton{font-weight:700;margin:0 0 6px}
+.image{overflow-x:auto;margin:4px 0 8px}
+.image svg{max-width:100%}
+.lbl2{font-size:.8rem;color:var(--muted);margin:10px 0 4px;text-transform:uppercase;letter-spacing:.04em}
+.choix{display:flex;flex-wrap:wrap;gap:6px}
+.choix button{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:.4em .8em;font-size:.92rem;color:var(--ink)}
+.choix button.sel{border-color:var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:700}
+.choix button.juste{border-color:var(--green);background:#e8f5ec;color:var(--green);font-weight:700}
+.choix button.faux{border-color:var(--red);background:#fbeceb;color:var(--red)}
+.choix button:disabled{cursor:default}
+.choix.colonne{flex-direction:column;align-items:stretch}
+.choix.colonne button{text-align:left}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
+.btn{border:1px solid var(--accent);color:var(--accent);background:#fff;border-radius:999px;padding:.4em 1.1em;font-size:.92rem}
+.btn.prim{background:var(--accent);color:#fff}
+.btn.actif{background:var(--accent);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.retour{border-radius:8px;padding:.6em .9em;margin-top:12px;font-size:.92rem}
+.retour:empty{display:none}
+.retour.good{background:#e8f5ec;border:1px solid var(--green)}
+.retour.bad{background:#fbeceb;border:1px solid var(--red)}
+.retour h4{margin:.1em 0 .3em}
+.retour ul{margin:.3em 0;padding-left:1.2em}
+.pscore{font-size:.85rem;color:var(--muted);margin:10px 0 0}
+.pscore button{border:none;background:none;color:var(--accent);text-decoration:underline;font-size:.85rem;padding:0 .3em}
+@media (max-width:700px){header{position:static}h1{font-size:1.25rem}}
+.installhelp{max-width:1000px;margin:0 auto;padding:0 18px 12px}
+.installhelp .card{background:var(--accent-soft);border-radius:10px;padding:12px 16px;font-size:.9rem}
+@@CSSATELIER@@
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1>Atelier d'<em>harmonie</em></h1>
+    <div class="reglages">
+      <label>Son <select id="son"><option value="auto">Automatique</option><option value="piano">Piano</option><option value="choeur">Chœur</option><option value="orgue">Orgue</option><option value="cordes">Quatuor à cordes</option></select></label>
+      <label>Tempo <select id="tempo"><option value="60">Lent</option><option value="90" selected>Normal</option><option value="120">Rapide</option></select></label>
+      <span id="etat"></span>
+      <button type="button" id="install" class="ghost">Installer l'appli</button>
+    </div>
+  </div>
+  <nav id="tabs" aria-label="Modules">
+    <a href="#cours">Cours</a>
+    <a href="#cahier">Cahier d'exercices</a>
+    <a href="#chiffrer">Chiffrer</a>
+    <a href="#fautes">Chasse aux fautes</a>
+    <a href="#cadences">Cadences à l'oreille</a>
+    <a href="#quiz">Quiz</a>
+  </nav>
+  <div id="installHelp" class="installhelp" hidden>
+    <div class="card">
+      <b>Installer l'Atelier d'harmonie sur ton appareil</b>
+      <p id="installWhere" style="margin:4px 0 6px"></p>
+      <ul style="margin:0;padding-left:20px">
+        <li><b>iPhone / iPad</b> : ouvre l'appli dans <b>Safari</b>, touche <b>Partager</b> (carré avec une flèche), puis <b>Sur l'écran d'accueil</b>.</li>
+        <li><b>Android</b> : ouvre l'appli dans <b>Chrome</b>, menu <b>⋮</b>, puis <b>Installer l'application</b>.</li>
+        <li><b>Ordinateur</b> : dans Chrome ou Edge, icône d'installation à droite de la barre d'adresse.</li>
+      </ul>
+      <div class="row"><button type="button" id="installClose" class="btn">Fermer</button></div>
+    </div>
+  </div>
+</header>
+<main>
+
+<section class="panel" id="p-cours">
+  <div class="navchap"><button id="coPrev" aria-label="Chapitre précédent">◀</button><select id="selco" aria-label="Chapitre"></select><button id="coNext" aria-label="Chapitre suivant">▶</button></div>
+  <div class="feuille">@@COURS@@
+    <div class="suite"><button id="coPrev2">◀ Chapitre précédent</button><button id="coNext2">Chapitre suivant ▶</button></div>
+  </div>
+</section>
+
+<section class="panel" id="p-cahier">
+  <div class="progres"><span id="progTxt"></span><div class="barre-p"><span id="progBar"></span></div></div>
+  <div class="navchap"><button id="caPrev" aria-label="Chapitre précédent">◀</button><select id="selca" aria-label="Chapitre du cahier"></select><button id="caNext" aria-label="Chapitre suivant">▶</button></div>
+  <div class="feuille">@@CAHIER@@
+    <div class="suite"><button id="caPrev2">◀ Chapitre précédent</button><button id="caNext2">Chapitre suivant ▶</button></div>
+  </div>
+</section>
+
+<section class="panel" id="p-chiffrer">
+  <h2>Chiffrer un accord</h2>
+  <p class="lead">Trouve le <b>degré</b> de l'accord dans la tonalité, puis son <b>état</b> : regarde la basse. Fondamentale à la basse : 5. Tierce : 6. Quinte : 6/4. (Chapitres 2, 6, 8 et 10.)</p>
+  <div class="carte">
+    <p class="ton" id="acTon"></p>
+    <div class="image" id="acImg"></div>
+    <button class="btn" id="acPlay">▶ Écouter</button>
+    <p class="lbl2">Degré</p><div class="choix" id="acDeg"></div>
+    <p class="lbl2">État</p><div class="choix" id="acEt"></div>
+    <div class="row"><button class="btn prim" id="acOk" disabled>Vérifier</button><button class="btn" id="acNext">Accord suivant →</button></div>
+    <div class="retour" id="acFb"></div>
+    <p class="pscore" id="sc-chiffrer"></p>
+  </div>
+</section>
+
+<section class="panel" id="p-fautes">
+  <h2>Chasse aux fautes</h2>
+  <p class="lead">Deux accords, et peut-être une faute. Trouve laquelle ! Écoute, regarde chaque accord, puis chaque paire de voix. (Chapitres 1 à 3, 6 et 10.)</p>
+  <div class="carte">
+    <p class="ton" id="faTon"></p>
+    <div class="image" id="faImg"></div>
+    <button class="btn" id="faPlay">▶ Écouter</button>
+    <p class="lbl2">Quelle est la faute ?</p><div class="choix colonne" id="faChoix"></div>
+    <div class="row"><button class="btn" id="faNext">Enchaînement suivant →</button></div>
+    <div class="retour" id="faFb"></div>
+    <p class="pscore" id="sc-fautes"></p>
+  </div>
+</section>
+
+<section class="panel" id="p-cadences">
+  <h2>Cadences à l'oreille</h2>
+  <p class="lead">Écoute la phrase et reconnais la cadence finale. La partition apparaît après ta réponse. (Chapitres 7 et 8.)</p>
+  <div class="carte">
+    <p class="ton" id="cdTon"></p>
+    <div class="row" style="margin-top:0"><button class="btn prim" id="cdPlay">▶ Écouter la phrase</button><button class="btn" id="cdFin">▶ Les deux derniers accords</button></div>
+    <p class="lbl2">Quelle cadence ?</p><div class="choix" id="cdChoix"></div>
+    <div class="image" id="cdImg"></div>
+    <div class="row"><button class="btn" id="cdNext">Phrase suivante →</button></div>
+    <div class="retour" id="cdFb"></div>
+    <p class="pscore" id="sc-cadences"></p>
+  </div>
+</section>
+
+<section class="panel" id="p-quiz">
+  <h2>Quiz de cours</h2>
+  <p class="lead">Des questions sur les règles du cours. Après chaque réponse, une explication et le chapitre à relire.</p>
+  <div class="carte">
+    <p class="lbl2" id="qzChap"></p>
+    <p class="ton" id="qzQ"></p>
+    <div class="choix colonne" id="qzChoix"></div>
+    <div class="row"><button class="btn" id="qzNext">Question suivante →</button></div>
+    <div class="retour" id="qzFb"></div>
+    <p class="pscore" id="sc-quiz"></p>
+  </div>
+</section>
+
+</main>
+<script>
+const $ = id => document.getElementById(id);
+const SONS = @@SONS@@;
+const EXOS = @@EXOS@@;
+const GLYPH = @@GLYPH@@;
+const DATA = @@DATA@@;
+const QUIZ = @@QUIZ@@;
+const CHAPS = @@CHAPS@@;
+@@LECTEUR@@
+document.querySelectorAll('.jouer').forEach(b => b.addEventListener('click', () => lireMusique(SONS[b.dataset.ex], b, b.dataset.mp3)));
+@@VERIFJS@@
+@@ATELIERJS@@
+
+// ------------------------------------------------------------------ mémoire
+const ST = {
+  get(k, d) { try { const v = JSON.parse(localStorage.getItem('harmonie-app-' + k)); return v === null || v === undefined ? d : v; } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem('harmonie-app-' + k, JSON.stringify(v)); } catch (e) {} }
+};
+let scores = ST.get('scores', {});
+const faits = new Set(ST.get('faits', []));
+const TOUS_CAHIER = CHAPS.ca.flatMap(c => c[2]);
+function noter(cle, ok) {
+  const s = scores[cle] || [0, 0]; s[1]++; if (ok) s[0]++; scores[cle] = s; ST.set('scores', scores); majScores();
+}
+function majScores() {
+  ['chiffrer', 'fautes', 'cadences', 'quiz'].forEach(k => {
+    const s = scores[k] || [0, 0], el = $('sc-' + k);
+    el.innerHTML = s[1] ? `Score : <b>${s[0]}</b> / ${s[1]} (${Math.round(100 * s[0] / s[1])} %) <button data-raz="${k}">remettre à zéro</button>` : '';
+    const b = el.querySelector('button'); if (b) b.onclick = () => { delete scores[k]; ST.set('scores', scores); majScores(); };
+  });
+}
+window.atelierReussi = id => {
+  if (faits.has(id)) return;
+  faits.add(id); ST.set('faits', [...faits]); majProgres();
+};
+function majProgres() {
+  const n = TOUS_CAHIER.filter(id => faits.has(id)).length;
+  $('progTxt').innerHTML = `<b>${n}</b> / ${TOUS_CAHIER.length} exercices réussis`;
+  $('progBar').style.width = (100 * n / TOUS_CAHIER.length) + '%';
+  const sel = $('selca');
+  CHAPS.ca.forEach(([id, titre, ex], k) => {
+    const f = ex.filter(e => faits.has(e)).length;
+    sel.options[k].textContent = titre + (ex.length ? `  (${f}/${ex.length}${f === ex.length ? ' ✓' : ''})` : '');
+  });
+}
+
+// ------------------------------------------------------------------ cours et cahier
+const montes = {};
+function monterDans(sec) {
+  sec.querySelectorAll('.atelier.guide').forEach(el => { const id = el.dataset.exo; if (!montes[id]) montes[id] = Atelier.monter(el, id, EXOS[id]); });
+}
+document.querySelectorAll('.faire').forEach(b => b.addEventListener('click', () => {
+  const id = b.dataset.exo, el = $('at-' + id);
+  el.hidden = !el.hidden; b.classList.toggle('on', !el.hidden);
+  b.textContent = el.hidden ? "✏️ Faire l'exercice ici" : "✏️ Fermer l'exercice";
+  if (!el.hidden && !montes[id]) montes[id] = Atelier.monter(el, id, EXOS[id]);
+}));
+['co', 'ca'].forEach(pre => {
+  const sel = $('sel' + pre);
+  CHAPS[pre].forEach(([id, titre]) => sel.add(new Option(titre, id)));
+  sel.onchange = () => { location.hash = sel.value; };
+  const aller = d => { const l = CHAPS[pre], k = l.findIndex(c => c[0] === sel.value) + d; if (k >= 0 && k < l.length) location.hash = l[k][0]; };
+  [$(pre + 'Prev'), $(pre + 'Prev2')].forEach(b => b.onclick = () => aller(-1));
+  [$(pre + 'Next'), $(pre + 'Next2')].forEach(b => b.onclick = () => aller(1));
+});
+function afficherChap(pre, id) {
+  const l = CHAPS[pre];
+  if (!l.some(c => c[0] === id)) id = l[0][0];
+  l.forEach(([cid]) => { $(cid).hidden = cid !== id; });
+  $('sel' + pre).value = id;
+  const k = l.findIndex(c => c[0] === id);
+  [$(pre + 'Prev'), $(pre + 'Prev2')].forEach(b => b.disabled = k === 0);
+  [$(pre + 'Next'), $(pre + 'Next2')].forEach(b => b.disabled = k === l.length - 1);
+  monterDans($(id));
+  ST.set('chap-' + pre, id);
+}
+
+// ------------------------------------------------------------------ onglets
+const TABS = ['cours', 'cahier', 'chiffrer', 'fautes', 'cadences', 'quiz'];
+let ongletPrec = null, chapPrec = null;
+function route() {
+  const h = decodeURIComponent(location.hash.slice(1)) || ST.get('onglet', 'cours');
+  let tab = h, chap = null;
+  const m = h.match(/^(co|ca)-(\d\d)$/);
+  if (m) { tab = m[1] === 'co' ? 'cours' : 'cahier'; chap = h; }
+  if (!TABS.includes(tab)) tab = 'cours';
+  TABS.forEach(t => $('p-' + t).classList.toggle('on', t === tab));
+  document.querySelectorAll('#tabs a').forEach(a => { if (a.getAttribute('href') === '#' + tab) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+  if (tab === 'cours') afficherChap('co', chap || ST.get('chap-co', CHAPS.co[0][0]));
+  if (tab === 'cahier') afficherChap('ca', chap || ST.get('chap-ca', CHAPS.ca[0][0]));
+  const cle = tab + (chap || '');
+  if (cle !== chapPrec) { window.scrollTo(0, 0); arreter(); }
+  chapPrec = cle; ST.set('onglet', tab);
+}
+
+// ------------------------------------------------------------------ outils des entraînements
+const DEGN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII'];
+const MAJT = {Do: 0, Sol: 1, 'Ré': 2, La: 3, Mi: 4, Fa: -1};
+const tonNom = (t, a) => MAJT[t] === a ? t + ' majeur' : t.toLowerCase() + ' mineur';
+function melange(a) { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
+const files = {};
+function tirer(cle, liste) { if (!files[cle] || !files[cle].length) files[cle] = melange([...liste.keys()]); return liste[files[cle].pop()]; }
+function vue(it, opts) { return Object.assign({durees: it.n.map(() => 4), armure: it.a, voix: [], tonique: it.t, sansNumeros: it.n.length === 1}, opts || {}); }
+function dessinerItem(el, it, opts, mauvais) { el.innerHTML = Atelier.image(vue(it, opts), it.n, mauvais); }
+function jouerAccords(accords, b, durees) {
+  const voix = [0, 1, 2, 3].map(v => accords.map((c, i) => [HV.midi(HV.N(c[v])), durees ? durees[i] : 2]));
+  lireMusique({voix, genre: 'choeur'}, b);
+}
+function boutons(el, libelles, clic) {
+  el.innerHTML = '';
+  return libelles.map((l, k) => { const b = document.createElement('button'); b.type = 'button'; b.innerHTML = l; b.onclick = () => clic(k, b); el.appendChild(b); return b; });
+}
+
+// ------------------------------------------------------------------ 1. chiffrer
+let AC = null, acD = null, acE = null, acFini = false;
+const ETATS = [['5', '5 · état fondamental'], ['6', '6 · 1er renversement'], ['64', '6/4 · 2e renversement']];
+function acNouveau() {
+  AC = tirer('ac', DATA.accords); acD = acE = null; acFini = false;
+  $('acTon').textContent = 'En ' + tonNom(AC.t, AC.a);
+  dessinerItem($('acImg'), AC);
+  const bd = boutons($('acDeg'), DEGN, k => { if (acFini) return; acD = k; bd.forEach((b, j) => b.classList.toggle('sel', j === k)); $('acOk').disabled = acE === null; });
+  const be = boutons($('acEt'), ETATS.map(e => e[1]), k => { if (acFini) return; acE = ETATS[k][0]; be.forEach((b, j) => b.classList.toggle('sel', j === k)); $('acOk').disabled = acD === null; });
+  $('acOk').disabled = true; $('acFb').className = 'retour'; $('acFb').innerHTML = '';
+}
+$('acOk').onclick = () => {
+  if (acFini || acD === null || acE === null) return;
+  acFini = true; $('acOk').disabled = true;
+  const ok = acD === AC.d && acE === AC.e;
+  [...$('acDeg').children].forEach((b, j) => { b.disabled = true; b.classList.remove('sel'); if (j === AC.d) b.classList.add('juste'); else if (j === acD) b.classList.add('faux'); });
+  [...$('acEt').children].forEach((b, j) => { b.disabled = true; b.classList.remove('sel'); if (ETATS[j][0] === AC.e) b.classList.add('juste'); else if (ETATS[j][0] === acE) b.classList.add('faux'); });
+  const ch = {'5': '5', '6': '6', '64': '6/4'}[AC.e];
+  $('acFb').className = 'retour ' + (ok ? 'good' : 'bad');
+  $('acFb').innerHTML = `<h4>${ok ? 'Juste !' : 'Pas tout à fait.'} C'est ${DEGN[AC.d]} ${ch}.</h4>${AC.x}`;
+  noter('chiffrer', ok);
+};
+$('acNext').onclick = () => { arreter(); acNouveau(); };
+$('acPlay').onclick = ev => jouerAccords(AC.n, ev.currentTarget, [3]);
+
+// ------------------------------------------------------------------ 2. chasse aux fautes
+let FA = null, faFini = false;
+const CATS = DATA.cats.concat([[null, 'Aucune faute']]);
+function faNouveau() {
+  FA = tirer('fa', DATA.fautes); faFini = false;
+  $('faTon').textContent = 'En ' + tonNom(FA.t, FA.a) + ' : ' + FA.deg.join(' – ');
+  dessinerItem($('faImg'), FA, {degres: FA.deg, chiffres: FA.ch});
+  boutons($('faChoix'), CATS.map(c => c[1]), (k, b) => {
+    if (faFini) return; faFini = true;
+    const bon = CATS[k][0] === FA.c;
+    [...$('faChoix').children].forEach((x, j) => { x.disabled = true; if (CATS[j][0] === FA.c) x.classList.add('juste'); else if (j === k) x.classList.add('faux'); });
+    dessinerItem($('faImg'), FA, {degres: FA.deg, chiffres: FA.ch}, FA.k);
+    $('faFb').className = 'retour ' + (bon ? 'good' : 'bad');
+    $('faFb').innerHTML = `<h4>${bon ? 'Bien vu !' : 'Non.'}</h4>` + (FA.c ? '<ul>' + FA.m.map(m => `<li>${m}</li>`).join('') + '</ul>'
+      : 'Cet enchaînement est correct : tessitures, écarts, doublures, quintes et octaves, sensible… tout est en ordre.');
+    noter('fautes', bon);
+  });
+  $('faFb').className = 'retour'; $('faFb').innerHTML = '';
+}
+$('faNext').onclick = () => { arreter(); faNouveau(); };
+$('faPlay').onclick = ev => jouerAccords(FA.n, ev.currentTarget, [2, 2]);
+
+// ------------------------------------------------------------------ 3. cadences
+let CD = null, cdFini = false;
+const CADS = [['parfaite', 'Parfaite'], ['imparfaite', 'Imparfaite'], ['demi', 'Demi-cadence'], ['plagale', 'Plagale'], ['rompue', 'Rompue']];
+const CADX = {
+  parfaite: 'V – I, les deux accords à l\'état fondamental : le point final.',
+  imparfaite: 'V – I avec un renversement (ici le V6, sensible à la basse) : un point plus léger.',
+  demi: 'La phrase s\'arrête sur V : une virgule, une question.',
+  plagale: 'IV – I : la conclusion douce de l\'« Amen ».',
+  rompue: 'V – VI : on attendait I, c\'est VI qui arrive. La surprise !'
+};
+function cdDurees(it) { return it.n.map((c, i) => i === it.n.length - 1 ? 3 : 1.5); }
+function cdNouveau() {
+  CD = tirer('cd', DATA.cadences); cdFini = false;
+  $('cdTon').textContent = 'En ' + tonNom(CD.t, CD.a);
+  $('cdImg').innerHTML = '';
+  boutons($('cdChoix'), CADS.map(c => c[1]), k => {
+    if (cdFini) return; cdFini = true;
+    const bon = CADS[k][0] === CD.c;
+    [...$('cdChoix').children].forEach((x, j) => { x.disabled = true; if (CADS[j][0] === CD.c) x.classList.add('juste'); else if (j === k) x.classList.add('faux'); });
+    dessinerItem($('cdImg'), CD, {degres: CD.deg, chiffres: CD.ch});
+    const nom = CADS.find(c => c[0] === CD.c)[1];
+    $('cdFb').className = 'retour ' + (bon ? 'good' : 'bad');
+    $('cdFb').innerHTML = `<h4>${bon ? 'Bravo !' : 'Non :'} ${CD.c === 'demi' ? 'demi-cadence' : 'cadence ' + nom.toLowerCase()}.</h4>${CADX[CD.c]} Phrase : ${CD.deg.map((d, i) => d + (CD.ch[i] === '5' ? '' : CD.ch[i])).join(' – ')}.`;
+    noter('cadences', bon);
+  });
+  $('cdFb').className = 'retour'; $('cdFb').innerHTML = '';
+}
+$('cdNext').onclick = () => { arreter(); cdNouveau(); };
+$('cdPlay').onclick = ev => jouerAccords(CD.n, ev.currentTarget, cdDurees(CD));
+$('cdFin').onclick = ev => jouerAccords(CD.n.slice(-2), ev.currentTarget, [1.5, 3]);
+
+// ------------------------------------------------------------------ 4. quiz
+let QZ = null, qzFini = false;
+const CHAPCO = Object.fromEntries(CHAPS.co.map(c => [+c[0].slice(3), c[1]]));
+function qzNouveau() {
+  QZ = tirer('qz', QUIZ); qzFini = false;
+  $('qzChap').textContent = CHAPCO[QZ.c] || '';
+  $('qzQ').textContent = QZ.q;
+  const ordre = melange([...QZ.r.keys()]);
+  boutons($('qzChoix'), ordre.map(k => QZ.r[k]), (k) => {
+    if (qzFini) return; qzFini = true;
+    const bon = ordre[k] === 0;
+    [...$('qzChoix').children].forEach((x, j) => { x.disabled = true; if (ordre[j] === 0) x.classList.add('juste'); else if (j === k) x.classList.add('faux'); });
+    $('qzFb').className = 'retour ' + (bon ? 'good' : 'bad');
+    const n = String(QZ.c).padStart(2, '0');
+    $('qzFb').innerHTML = `<h4>${bon ? 'Juste !' : 'Non.'}</h4>${QZ.x} <a href="#co-${n}">Relire le chapitre</a>`;
+    noter('quiz', bon);
+  });
+  $('qzFb').className = 'retour'; $('qzFb').innerHTML = '';
+}
+$('qzNext').onclick = qzNouveau;
+
+// ------------------------------------------------------------------ démarrage
+majScores(); majProgres();
+acNouveau(); faNouveau(); cdNouveau(); qzNouveau();
+route(); window.addEventListener('hashchange', route);
+try { if ('serviceWorker' in navigator && location.protocol === 'https:') navigator.serviceWorker.register('sw.js').catch(() => {}); } catch (e) {}
+(function () {
+  let ask = null; const btn = $('install'), help = $('installHelp');
+  const standalone = () => { try { return matchMedia('(display-mode: standalone)').matches || navigator.standalone === true; } catch (e) { return false; } };
+  if (standalone()) btn.hidden = true;
+  const enLigne = /github\.io$/.test(location.hostname);
+  $('installWhere').innerHTML = enLigne ? "Ton navigateur ne propose pas l'installation automatique : suis la méthode de ton appareil."
+    : "L'installation se fait depuis la version en ligne : <a href=\"https://mlevan8395.github.io/Cours-harmonie/app/\">mlevan8395.github.io/Cours-harmonie/app</a>.";
+  window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); ask = e; });
+  btn.onclick = async () => { if (ask) { ask.prompt(); try { await ask.userChoice; } catch (e) {} ask = null; return; } help.hidden = !help.hidden; };
+  $('installClose').onclick = () => { help.hidden = true; };
+  window.addEventListener('appinstalled', () => { btn.hidden = true; help.hidden = true; });
+})();
+</script>
+</body>
+</html>
