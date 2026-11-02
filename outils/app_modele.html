@@ -142,7 +142,8 @@ code{background:#f0f0f0;padding:0 .3em;border-radius:4px}
 
 <section class="panel" id="p-chiffrer">
   <h2>Chiffrer un accord</h2>
-  <p class="lead">Trouve le <b>degré</b> de l'accord dans la tonalité, puis son <b>état</b> : regarde la basse. Fondamentale à la basse : 5. Tierce : 6. Quinte : 6/4. (Chapitres 2, 6, 8 et 10.)</p>
+  <p class="lead">Trouve le <b>degré</b> de l'accord dans la tonalité, puis son <b>état</b> : regarde la basse. Accord de 3 sons : fondamentale à la basse 5, tierce 6, quinte 6/4. Accord de 7e : 7, 6/5, 4/3 (+6), 2 (+4). (Chapitres 2, 6, 8, 10 et 18 à 20.)</p>
+  <div class="choix" id="acMode" style="margin-bottom:12px"><button type="button" data-m="3" class="sel">Accords de 3 sons</button><button type="button" data-m="4">Accords de 7e</button><button type="button" data-m="34">Les deux</button></div>
   <div class="carte">
     <p class="ton" id="acTon"></p>
     <div class="image" id="acImg"></div>
@@ -157,7 +158,7 @@ code{background:#f0f0f0;padding:0 .3em;border-radius:4px}
 
 <section class="panel" id="p-fautes">
   <h2>Chasse aux fautes</h2>
-  <p class="lead">Deux accords, et peut-être une faute. Trouve laquelle ! Écoute, regarde chaque accord, puis chaque paire de voix. (Chapitres 1 à 3, 6 et 10.)</p>
+  <p class="lead">Deux accords, et peut-être une faute. Trouve laquelle ! Écoute, regarde chaque accord, puis chaque paire de voix. (Chapitres 1 à 3, 6, 10, 18 et 19.)</p>
   <div class="carte">
     <p class="ton" id="faTon"></p>
     <div class="image" id="faImg"></div>
@@ -171,7 +172,7 @@ code{background:#f0f0f0;padding:0 .3em;border-radius:4px}
 
 <section class="panel" id="p-cadences">
   <h2>Cadences à l'oreille</h2>
-  <p class="lead">Écoute la phrase et reconnais la cadence finale. La partition apparaît après ta réponse. (Chapitres 7 et 8.)</p>
+  <p class="lead">Écoute la phrase et reconnais la cadence finale. La partition apparaît après ta réponse. (Chapitres 7, 8 et 18.)</p>
   <div class="carte">
     <p class="ton" id="cdTon"></p>
     <div class="row" style="margin-top:0"><button class="btn prim" id="cdPlay">▶ Écouter la phrase</button><button class="btn" id="cdFin">▶ Les deux derniers accords</button></div>
@@ -311,10 +312,19 @@ function boutons(el, libelles, clic) {
 }
 
 // ------------------------------------------------------------------ 1. chiffrer
-let AC = null, acD = null, acE = null, acFini = false;
-const ETATS = [['5', '5 · état fondamental'], ['6', '6 · 1er renversement'], ['64', '6/4 · 2e renversement']];
+let AC = null, acD = null, acE = null, acFini = false, ETATS = null;
+const ETATS3 = [['5', '5 · état fondamental'], ['6', '6 · 1er renversement'], ['64', '6/4 · 2e renversement']];
+const ETATS4 = [['7', '7 · état fondamental'], ['65', '6/5 · 1er renversement'], ['43', '4/3 (+6) · 2e renversement'], ['2', '2 (+4) · 3e renversement']];
+let acMode = ST.get('acMode', '3');
+const ACC34 = DATA.accords.concat(DATA.accords4);
+document.querySelectorAll('#acMode button').forEach(b => {
+  b.classList.toggle('sel', b.dataset.m === acMode);
+  b.onclick = () => { acMode = b.dataset.m; ST.set('acMode', acMode); document.querySelectorAll('#acMode button').forEach(x => x.classList.toggle('sel', x === b)); arreter(); acNouveau(); };
+});
 function acNouveau() {
-  AC = tirer('ac', DATA.accords); acD = acE = null; acFini = false;
+  AC = acMode === '3' ? tirer('ac', DATA.accords) : acMode === '4' ? tirer('ac4', DATA.accords4) : tirer('ac34', ACC34);
+  ETATS = AC.n[0] && AC.e.length && ['7', '65', '43', '2'].includes(AC.e) ? ETATS4 : ETATS3;
+  acD = acE = null; acFini = false;
   $('acTon').textContent = 'En ' + tonNom(AC.t, AC.a);
   dessinerItem($('acImg'), AC);
   const bd = boutons($('acDeg'), DEGN, k => { if (acFini) return; acD = k; bd.forEach((b, j) => b.classList.toggle('sel', j === k)); $('acOk').disabled = acE === null; });
@@ -327,9 +337,9 @@ $('acOk').onclick = () => {
   const ok = acD === AC.d && acE === AC.e;
   [...$('acDeg').children].forEach((b, j) => { b.disabled = true; b.classList.remove('sel'); if (j === AC.d) b.classList.add('juste'); else if (j === acD) b.classList.add('faux'); });
   [...$('acEt').children].forEach((b, j) => { b.disabled = true; b.classList.remove('sel'); if (ETATS[j][0] === AC.e) b.classList.add('juste'); else if (ETATS[j][0] === acE) b.classList.add('faux'); });
-  const ch = {'5': '5', '6': '6', '64': '6/4'}[AC.e];
+  const ch = AC.c || {'5': '5', '6': '6', '64': '6/4'}[AC.e];
   $('acFb').className = 'retour ' + (ok ? 'good' : 'bad');
-  $('acFb').innerHTML = `<h4>${ok ? 'Juste !' : 'Pas tout à fait.'} C'est ${DEGN[AC.d]} ${ch}.</h4>${AC.x}`;
+  $('acFb').innerHTML = `<h4>${ok ? 'Juste !' : 'Pas tout à fait.'} ${AC.c ? `C'est le ${DEGN[AC.d]}7, chiffré ${ch}.` : `C'est ${DEGN[AC.d]} ${ch}.`}</h4>${AC.x}`;
   noter('chiffrer', ok);
 };
 $('acNext').onclick = () => { arreter(); acNouveau(); };

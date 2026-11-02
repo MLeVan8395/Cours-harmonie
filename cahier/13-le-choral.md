@@ -1,4 +1,4 @@
-[← Le mode mineur](10-le-mode-mineur.md) · [Sommaire du cahier](README.md)
+[← Le mode mineur](10-le-mode-mineur.md) · [Sommaire du cahier](README.md) · [La septième de dominante →](18-la-septieme-de-dominante.md)
 
 ## Le choral : notes étrangères et harmonisation
 
@@ -130,4 +130,4 @@ Un accord par temps : choisis les accords, écris la basse, puis l'alto et le t�
 
 ---
 
-[← Le mode mineur](10-le-mode-mineur.md) · [Sommaire du cahier](README.md)
+[← Le mode mineur](10-le-mode-mineur.md) · [Sommaire du cahier](README.md) · [La septième de dominante →](18-la-septieme-de-dominante.md)

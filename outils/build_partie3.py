@@ -447,7 +447,7 @@ TON = {('Do', 0): 'Do majeur', ('Sol', 1): 'Sol majeur', ('Fa', -1): 'Fa majeur'
 NOMOBJ = {'p': 'note de passage', 'b': 'broderie', 'r': 'retard', 'total': 'note étrangère'}
 def objtxt(o):
     return ', '.join(f"{n} {NOMOBJ[k]}{'s' if n > 1 else ''}" for k, n in o.items())
-nav = "[← Le mode mineur](10-le-mode-mineur.md) · [Sommaire du cahier](README.md)"
+nav = "[← Le mode mineur](10-le-mode-mineur.md) · [Sommaire du cahier](README.md) · [La septième de dominante →](18-la-septieme-de-dominante.md)"
 L = [nav, '', '## Le choral : notes étrangères et harmonisation', '',
      "Ces exercices accompagnent les chapitres [13](../cours/13-les-notes-etrangeres.md), [14](../cours/14-analyse-un-choral-de-bach.md) "
      "et [15](../cours/15-harmoniser-une-melodie-de-choral.md) du cours.", '',

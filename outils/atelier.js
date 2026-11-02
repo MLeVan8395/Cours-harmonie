@@ -25,7 +25,13 @@ const Atelier = (() => {
     return `<path d="${g.d}" transform="translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${k.toFixed(5)} ${(-k).toFixed(5)})" fill="${color || INK}"/>`;
   }
   function nomAccord(ch) {
-    const tr = HV.triad(ch); if (!tr) return '?';
+    const tr = HV.triad(ch);
+    if (!tr) {
+      const A = HV.info4(ch); if (!A) return '?';
+      const r = ch.map(N).find(n => n.s === A.r);
+      const suf = A.nn !== null ? '9' : ({dom: '7', M7: 'maj7', m7: 'm7', 'ø': 'm7♭5', o7: '°7'}[A.q] || '7');
+      return LETTRE[r.s] + (r.a === 1 ? '♯' : r.a === -1 ? '♭' : '') + suf;
+    }
     const r = ch.map(N).find(n => n.s === tr[0]);
     const q = HV.qualite(ch);
     return LETTRE[r.s] + (r.a === 1 ? '♯' : r.a === -1 ? '♭' : '') + ({m: 'm', d: '°', A: '+'}[q] || '');
@@ -168,7 +174,7 @@ const Atelier = (() => {
     const base = Math.max(sysBot + 34, ext[1] + 24);
     let rangs = 0;
     const etape = etapeCourante(E);
-    const degres = ex.guide ? ex.durees.map((d, i) => etape && etape.type === 'degres' && !E.fini ? '@' : (E.degres[i] !== null && E.degres[i] !== undefined ? DEGN[E.degres[i]] : '?')) : ex.degres;
+    const degres = ex.guide && !(ex.degres && !ex.guide.some(g => g.type === 'degres')) ? ex.durees.map((d, i) => etape && etape.type === 'degres' && !E.fini ? '@' : (E.degres[i] !== null && E.degres[i] !== undefined ? libDeg(ex, E.degres[i]) : '?')) : ex.degres;
     const chiffres = ex.chiffres || (ex.guide ? E.notes.map((c, i) => chiffreVivant(E, i)) : null);
     [[degres, 0], [chiffres, 1]].forEach(([vals, r]) => {
       if (!vals) return;
@@ -177,8 +183,9 @@ const Atelier = (() => {
         if (!txt) return;
         const x = xCol(i);
         if (txt === '@') {   // menu pour choisir le degré
-          const opts = DEGN.slice(0, 6).map((d, k) => `<option value="${k}">${d}</option>`).join('');
-          lab.push(`<foreignObject x="${x - 24}" y="${y - 19}" width="48" height="26"><select xmlns="http://www.w3.org/1999/xhtml" data-deg="${i}" style="width:48px;height:24px;font:700 13px Verdana,sans-serif;color:#1f4e8c;border:1.5px solid #1f4e8c;border-radius:6px;background:#fff;padding:0"><option value="">?</option>${opts}</select></foreignObject>`);
+          const opts = (ex.menu ? ex.menu.map(m => m[0]) : DEGN.slice(0, 6)).map((d, k) => `<option value="${k}">${d}</option>`).join('');
+          const lw = ex.menu ? Math.max(48, Math.min(unit * (ex.durees[i] >= 4 ? 4 : ex.durees[i]) - 4, 66)) : 48;
+          lab.push(`<foreignObject x="${x - lw / 2}" y="${y - 19}" width="${lw}" height="26"><select xmlns="http://www.w3.org/1999/xhtml" data-deg="${i}" style="width:${lw}px;height:24px;font:700 13px Verdana,sans-serif;color:#1f4e8c;border:1.5px solid #1f4e8c;border-radius:6px;background:#fff;padding:0"><option value="">?</option>${opts}</select></foreignObject>`);
         } else if (/^\d\/\d$/.test(txt)) {
           const [a, b] = txt.split('/');
           lab.push(`<text x="${x}" y="${y - 8}" text-anchor="middle" font-family="${FONT}" font-size="12" font-weight="700" fill="#1f4e8c">${a}</text><text x="${x}" y="${y + 6}" text-anchor="middle" font-family="${FONT}" font-size="12" font-weight="700" fill="#1f4e8c">${b}</text>`);
@@ -297,15 +304,21 @@ const Atelier = (() => {
   const pcN = n => mod(HV.SEMI[n.s] + n.a, 12);
   const txtN = n => HV.FR[n.s] + (n.a === 1 ? '♯' : n.a === -1 ? '♭' : '');
   function accordDegre(ex, d) { return [noteDegre(ex, d), noteDegre(ex, d + 2), noteDegre(ex, d + 4)]; }
-  function nomDegre(ex, d) { return nomAccord(accordDegre(ex, d).map(n => HV.FR[n.s] + (n.a === 1 ? '#' : n.a === -1 ? 'b' : '') + '4')) + ' (' + DEGN[d] + ')'; }
+  const notesDe = names => names.map(x => N(x + '4'));
+  function libDeg(ex, d) { return ex.menu ? ex.menu[d][0] : DEGN[d]; }
+  function accordChoisi(ex, d) { return ex.menu ? notesDe(ex.menu[d][1]) : accordDegre(ex, d); }
+  function nomDegre(ex, d) { if (ex.menu) return nomAccord(ex.menu[d][1].map(x => x + '4')) + ' (' + ex.menu[d][0] + ')'; return nomAccord(accordDegre(ex, d).map(n => HV.FR[n.s] + (n.a === 1 ? '#' : n.a === -1 ? 'b' : '') + '4')) + ' (' + DEGN[d] + ')'; }
   function degreDe(ex, ch) {   // degré d'un accord écrit (solution)
     const tr = HV.triad(ch), r = ch.map(N).find(n => n.s === tr[0]);
     return mod(r.s - HV.FR.indexOf(ex.tonique), 7);
   }
-  function attendu(E, i) {     // [fondamentale, tierce, quinte] attendues pour l'accord i, ou null
+  function attendu(E, i) {     // [fondamentale, tierce, quinte (, septième, neuvième)] attendues pour l'accord i, ou null
     const ex = E.ex;
-    if (ex.harmonie && !ex.guide) return accordDegre(ex, ex.harmonie[i]);
-    if (ex.guide) return E.degres[i] === null || E.degres[i] === undefined ? null : accordDegre(ex, E.degres[i]);
+    const etapeDeg = ex.guide && ex.guide.some(g => g.type === 'degres');
+    if (ex.accords && !etapeDeg) return notesDe(ex.accords[i]);
+    if (ex.guide && !etapeDeg && !ex.chant) return accordDegre(ex, degreDe(ex, ex.solution[i]));
+    if (ex.harmonie && !ex.guide) return accordChoisi(ex, ex.harmonie[i]);
+    if (ex.guide) return E.degres[i] === null || E.degres[i] === undefined ? null : accordChoisi(ex, E.degres[i]);
     if (ex.chant) return null;
     return accordDegre(ex, degreDe(ex, ex.solution[i]));
   }
@@ -313,6 +326,13 @@ const Atelier = (() => {
     const a = attendu(E, i), b = E.notes[i][3];
     if (!a || !b) return '';
     const p = HV.pc(N(b));
+    if (a.length >= 4) {
+      const iv = [1, 2, 3].map(k => mod(pcN(a[k]) - pcN(a[0]), 12)).join(',');
+      const q = iv === '4,7,10' ? 'dom' : iv === '3,6,9' ? 'o7' : '';
+      if (a.length === 5) return p === pcN(a[0]) ? '9+' : '';
+      return p === pcN(a[0]) ? (q === 'dom' ? '7+' : q === 'o7' ? '7°' : '7') : p === pcN(a[1]) ? '6/5'
+        : p === pcN(a[2]) ? (q === 'dom' ? '+6' : '4/3') : p === pcN(a[3]) ? (q === 'dom' ? '+4' : '2') : '';
+    }
     return p === pcN(a[0]) ? '5' : p === pcN(a[1]) ? '6' : p === pcN(a[2]) ? '6/4' : '';
   }
 
@@ -340,7 +360,17 @@ const Atelier = (() => {
       if (d === null || d === undefined) return;
       const m = `accord ${i + 1}`;
       if (!ex.chant) {
-        const juste = degreDe(ex, ex.solution[i]);
+        const juste = ex.menu ? ex.harmonie[i] : degreDe(ex, ex.solution[i]);
+        if (d !== juste && ex.menu) {
+          const c = ex.chiffres[i];
+          const ind = {'7+': 'avec 7+, la basse est la fondamentale d\'un accord de 7e de dominante', '7': 'avec 7, la basse est la fondamentale d\'un accord de 7e',
+            '6/5': 'avec 6/5, la basse est la tierce : la fondamentale est une 3ce plus bas', '+6': 'avec +6, la basse est la quinte : la fondamentale est une 4te au-dessus',
+            '4/3': 'avec 4/3, la basse est la quinte : la fondamentale est une 4te au-dessus', '+4': 'avec +4, la basse est la 7e : la fondamentale est une 2de au-dessus',
+            '2': 'avec 2, la basse est la 7e : la fondamentale est une 2de au-dessus', '7°': 'avec 7°, c\'est une 7e diminuée, sur la sensible', '9+': 'avec 9+, c\'est une 9e de dominante',
+            '6': 'avec 6, la fondamentale est une 3ce sous la basse', '6/4': 'avec 6/4, la fondamentale est une 4te au-dessus de la basse'}[c] || 'regarde la basse, le chiffrage et les altérations';
+          errs.push({i, msg: `${m} : ce n'est pas le bon accord (${ind})`});
+          return;
+        }
         if (d !== juste) {
           const c = ex.chiffres[i];
           const indice = c === '6' ? 'avec 6, la fondamentale est une 3ce sous la basse' : c === '6/4' ? 'avec 6/4, la fondamentale est une 4te au-dessus de la basse' : 'avec 5 (ou ♯), la fondamentale est la basse elle-même';
@@ -348,10 +378,15 @@ const Atelier = (() => {
         }
         return;
       }
-      const s = N(ex.sopReel ? ex.sopReel[i] : E.notes[i][0]), notes = accordDegre(ex, d);
+      const s = N(ex.sopReel ? ex.sopReel[i] : E.notes[i][0]), notes = accordChoisi(ex, d);
       if (!notes.some(x => pcN(x) === HV.pc(s))) errs.push({i, msg: `${m} : le ${HV.nom(s)} du soprano n'est pas dans l'accord de ${nomDegre(ex, d)}`});
     });
-    if (ex.chant) {
+    if (ex.chant && ex.menu) {
+      const L = E.degres.map(d => d === null || d === undefined ? null : ex.menu[d][0]);
+      const fin = ex.finLabel || 'I';
+      if (L[n - 1] !== null && L[n - 1] !== fin) errs.push({i: n - 1, msg: `accord ${n} : cette phrase se termine sur ${fin}`});
+      if (fin === 'I' && L[n - 1] === 'I' && L[n - 2] !== null && !/^V(7|9)?$/.test(L[n - 2])) errs.push({i: n - 2, msg: `accord ${n - 1} : pour une cadence parfaite, il faut V (ou V7) avant le I final`});
+    } else if (ex.chant) {
       const D = E.degres;
       const fin = ex.fin === undefined ? 0 : ex.fin;
       if (D[n - 1] !== null && D[n - 1] !== undefined && D[n - 1] !== fin) errs.push({i: n - 1, msg: fin === 0 ? `accord ${n} : une phrase se termine sur I` : `accord ${n} : cette phrase se termine par une demi-cadence, sur ${DEGN[fin]}`});
@@ -367,7 +402,7 @@ const Atelier = (() => {
     return {errs, conseils};
   }
   function fautesNotes(E) {
-    const ex = E.ex, errs = HV.verifierPartiel(E.notes, ex.tonique, tierceVoulue(E));
+    const ex = E.ex, errs = HV.verifierPartiel(E.notes, ex.tons || ex.tonique, tierceVoulue(E), ex.libres);
     const conseils = [];
     // chaque note doit appartenir à l'accord attendu
     E.notes.forEach((ch, i) => {
@@ -382,9 +417,10 @@ const Atelier = (() => {
       const b = ch[3];
       if (ex.chant && b && ex.voix.includes(3) && pcs.includes(HV.pc(N(b)))) {
         const n = E.notes.length;
-        const cadence64 = E.degres[i] === 0 && E.degres[i + 1] === 4 && (!E.notes[i + 1][3] || E.notes[i + 1][3] === b);
-        if (HV.pc(N(b)) === pcs[2] && !cadence64) errs.push({i, msg: `accord ${i + 1} : la quinte à la basse donne une quarte et sixte, possible seulement en cadence (I6/4 juste avant V, sur la même basse) ; sinon mets la fondamentale (${txtN(a[0])}) ou la tierce (${txtN(a[1])})`});
-        else if (i >= n - 2 && HV.pc(N(b)) !== pcs[0] && E.degres[n - 2] === 4) errs.push({i, msg: `accord ${i + 1} : pour la cadence parfaite, mets la fondamentale (${txtN(a[0])}) à la basse`});
+        const lb = k => E.degres[k] === null || E.degres[k] === undefined ? null : libDeg(ex, E.degres[k]);
+        const cadence64 = lb(i) === 'I' && /^V7?$/.test(lb(i + 1) || '') && (!E.notes[i + 1][3] || E.notes[i + 1][3] === b);
+        if (a.length === 3 && HV.pc(N(b)) === pcs[2] && !cadence64) errs.push({i, msg: `accord ${i + 1} : la quinte à la basse donne une quarte et sixte, possible seulement en cadence (I6/4 juste avant V, sur la même basse) ; sinon mets la fondamentale (${txtN(a[0])}) ou la tierce (${txtN(a[1])})`});
+        else if (i >= n - 2 && HV.pc(N(b)) !== pcs[0] && /^V7?$/.test(lb(n - 2) || '') && lb(n - 1) === 'I') errs.push({i, msg: `accord ${i + 1} : pour la cadence parfaite, mets la fondamentale (${txtN(a[0])}) à la basse`});
       }
     });
     // conseils de mélodie pour la voix qu'on est en train d'écrire
@@ -455,7 +491,7 @@ const Atelier = (() => {
       if (roles[i + ',' + v + ',0'] === 'R' || !b) return a;
       return roles[i + ',' + v + ',1'] === 'R' ? b : a;
     }));
-    HV.verifierPartiel(sq, ex.tonique, tierceVoulue(E)).forEach(e => errs.push(e));
+    HV.verifierPartiel(sq, ex.tons || ex.tonique, tierceVoulue(E), ex.libres).forEach(e => errs.push(e));
     // quintes et octaves créées par les notes étrangères (entre attaques successives)
     const attaques = [...new Set(parVoix.flat().map(a => +a.t.toFixed(4)))].sort((a, b) => a - b);
     const son = (v, tt) => { const a = parVoix[v].find(a => a.t - 1e-9 <= tt && tt < a.t + a.d - 1e-9); return a ? a.n : null; };

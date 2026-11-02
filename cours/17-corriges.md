@@ -1,4 +1,4 @@
-[← 16. Exercices](16-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 16. Exercices](16-exercices.md) · [Sommaire](../README.md#sommaire) · [18. La septième de dominante →](18-la-septieme-de-dominante.md)
 
 ## 17. Corrigés
 
@@ -57,4 +57,4 @@ Les accords sont les mêmes, mais Bach fait davantage chanter chaque voix : brod
 
 ---
 
-[← 16. Exercices](16-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 16. Exercices](16-exercices.md) · [Sommaire](../README.md#sommaire) · [18. La septième de dominante →](18-la-septieme-de-dominante.md)

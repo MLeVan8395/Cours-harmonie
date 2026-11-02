@@ -13,7 +13,7 @@ Auteur : Mickael Le Van, professeur de musiques actuelles et jazz.
 Une appli web installable sur téléphone, tablette ou ordinateur, qui marche ensuite **hors connexion**. Elle réunit :
 
 - **Cours** : tous les chapitres, avec un lecteur sous chaque exemple (sons de banque General MIDI : chœur, piano, orgue, quatuor à cordes) ;
-- **Cahier d'exercices** : les 54 exercices, à faire directement sur la portée, corrigés au fur et à mesure ; la progression est enregistrée ;
+- **Cahier d'exercices** : les 80 exercices, à faire directement sur la portée, corrigés au fur et à mesure ; la progression est enregistrée ;
 - **Chiffrer** : trouver le degré et l'état (5, 6, 6/4) d'un accord, dans toutes les tonalités du cours (160 accords) ;
 - **Chasse aux fautes** : deux accords, une faute à trouver (quintes, octaves, croisement, doublure, sensible…), ou aucune (150 enchaînements) ;
 - **Cadences à l'oreille** : écouter une phrase et reconnaître la cadence (parfaite, imparfaite, demi, plagale, rompue) ;
@@ -37,7 +37,7 @@ Pour la mettre en ligne : dans les réglages du dépôt, **Settings → Pages**,
 | [`cours/images/`](cours/images/) | Les exemples et exercices gravés (PNG) |
 | [`cours/audio/`](cours/audio/) | Chaque exemple en MP3 et en MIDI |
 | [`index.html`](index.html) | La version web du cours, avec un lecteur sous chaque exemple |
-| [`cahier/`](cahier/README.md) | Le **cahier d'exercices** : 54 exercices qui suivent le cours, avec leurs corrigés |
+| [`cahier/`](cahier/README.md) | Le **cahier d'exercices** : 80 exercices qui suivent le cours, avec leurs corrigés |
 | [`cahier.html`](cahier.html) | La version web du cahier : tous les exercices à faire sur la portée |
 | [`app/`](app/) | L'application **Atelier d'harmonie** (PWA installable, hors connexion) |
 | [`outils/`](outils/) | Le graveur, le vérificateur de règles et les outils audio |
@@ -72,14 +72,14 @@ Les chapitres marqués ✅ sont rédigés. Les autres sont prévus : le plan peu
 - [16. Exercices](cours/16-exercices.md)
 - [17. Corrigés](cours/17-corriges.md)
 
-### Quatrième partie : les accords de quatre sons
+### Quatrième partie : les accords de quatre sons ✅
 
-- 18\. La 7e de dominante et ses renversements : préparation, résolution
-- 19\. Les 7es d'espèce (II7, IV7…) et les marches harmoniques
-- 20\. La 7e diminuée et la 9e de dominante
-- 21\. Les dominantes secondaires et la modulation aux tons voisins
-- 22\. Exercices
-- 23\. Corrigés
+- [18. La septième de dominante](cours/18-la-septieme-de-dominante.md) : résolution, doublures, renversements (7+, 6/5, +6, +4)
+- [19. Les septièmes d'espèce et les marches harmoniques](cours/19-les-septiemes-d-espece-et-les-marches.md) : préparation et résolution, le II6/5, la chaîne de septièmes
+- [20. La septième diminuée et la neuvième de dominante](cours/20-la-septieme-diminuee-et-la-neuvieme.md) : 9e de dominante, 7e de sensible, 7e diminuée
+- [21. Les dominantes secondaires et la modulation](cours/21-les-dominantes-secondaires-et-la-modulation.md) : V7/V et les autres, tons voisins, accord pivot
+- [22. Exercices](cours/22-exercices.md)
+- [23. Corrigés](cours/23-corriges.md)
 
 ### Cinquième partie : le style classique (Mozart, Beethoven)
 
@@ -120,7 +120,7 @@ Pour mettre la version web en ligne gratuitement : dans les réglages du dépôt
 
 ## Le cahier d'exercices
 
-À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15). Il compte **54 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés et 10 exercices sur le choral (orner une phrase, harmoniser une mélodie), en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
+À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15), accords de quatre sons (18-21). Il compte **80 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés, 10 exercices sur le choral (orner une phrase, harmoniser une mélodie) et 26 exercices sur les accords de 7e, la 9e, les dominantes secondaires et la modulation, en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
 
 Les exercices sont fabriqués par `outils/build_cahier.py` : pour chaque phrase (degrés, états, basse ou mélodie), le générateur (`outils/generateur.py`) calcule une réalisation sans faute, contrôlée par le vérificateur. Pour ajouter un exercice, il suffit d'une ligne dans le catalogue de ce fichier.
 

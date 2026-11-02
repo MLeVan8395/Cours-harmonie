@@ -14,5 +14,9 @@ Dans la version web (`cahier.html`), on fait les exercices **directement sur la 
 - [Basses données et chants donnés](09-basses-donnees-et-chants-donnes.md) (chapitre 9 du cours) : 3 × basse chiffrée, 4 × chant donné
 - [Le mode mineur](10-le-mode-mineur.md) (chapitre 10 du cours) : 3 × basse chiffrée, 3 × chant donné
 - [Le choral : notes étrangères et harmonisation](13-le-choral.md) (chapitres 13 à 15 du cours) : 4 × orner une phrase (notes étrangères), 6 × harmoniser une mélodie de choral
+- [La septième de dominante](18-la-septieme-de-dominante.md) (chapitre 18 du cours) : 2 × compléter l'alto et le ténor, 4 × basse chiffrée, 2 × chant donné
+- [Les septièmes d'espèce et les marches](19-les-septiemes-d-espece.md) (chapitre 19 du cours) : 3 × basse chiffrée, 2 × basse donnée, 1 × chant donné, 1 × chasse aux fautes
+- [La septième diminuée et la neuvième](20-la-septieme-diminuee-et-la-neuvieme.md) (chapitre 20 du cours) : 2 × basse chiffrée, 2 × basse donnée, 1 × chant donné
+- [Dominantes secondaires et modulation](21-dominantes-secondaires-et-modulation.md) (chapitre 21 du cours) : 3 × basse chiffrée, 1 × chant donné, 2 × basse donnée
 
-**54 exercices** en tout, dont 22 basses données, 13 chants donnés et 10 exercices sur le choral. Tous les corrigés sont contrôlés par le vérificateur du cours.
+**80 exercices** en tout, dont 22 basses données, 13 chants donnés, 10 exercices sur le choral et 26 sur les accords de quatre sons. Tous les corrigés sont contrôlés par le vérificateur du cours.
