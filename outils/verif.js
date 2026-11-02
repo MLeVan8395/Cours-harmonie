@@ -53,9 +53,22 @@ const HV = (() => {
     }
     return null;
   }
+  function sixteAug(ch) {
+    const L = ch.filter(Boolean).map(N);
+    for (const a of L) for (const b of L) {
+      if (mod(b.s - a.s, 7) === 5 && mod(pc(b) - pc(a), 12) === 10) {
+        const pa = pc(a);
+        const rest = [...new Set(L.map(n => mod(pc(n) - pa, 12)))].filter(x => x !== 0 && x !== 10).sort((x, y) => x - y).join(',');
+        const t = {'4': 'it', '4,6': 'fr', '4,7': 'al'}[rest];
+        if (t) return {type: t, b6: pa, s4: pc(b)};
+      }
+    }
+    return null;
+  }
+  const vue = (ch, ped) => ped ? [ch[0], ch[1], ch[2], ch[2]] : ch.slice(0, 4);
   function info4(ch) {
     const te = tetrade(ch);
-    if (!te || triad(ch)) return null;
+    if (!te || triad(ch) || sixteAug(ch)) return null;
     const [r, t, f, s, nn] = te;
     const notes = {}; ch.forEach(x => { const n = N(x); notes[n.s] = n; });
     const pr = pc(notes[r]), t3 = mod(pc(notes[t]) - pr, 12), t7 = mod(pc(notes[s]) - pr, 12);
@@ -79,6 +92,7 @@ const HV = (() => {
     return null;
   }
   function racine(ch) {
+    if (sixteAug(ch)) return null;
     const tr = triad(ch);
     if (tr) return pc(ch.map(N).find(n => n.s === tr[0]));
     const A = info4(ch);
@@ -104,6 +118,14 @@ const HV = (() => {
     if (B && familleDominante(B, sensB) === null && !meme)
       for (let v = 0; v < 4; v++) if (a[v] && b[v] && b[v].s === B.s && midi(a[v]) !== midi(b[v])) add(i + 0.5, `${m} : septième (${VOIX[v]}) non préparée`);
   }
+  function regles6(a, b, X, Xb, m, add, i) {
+    if (!X || (Xb && Xb.b6 === X.b6)) return;
+    for (let v = 0; v < 4; v++) {
+      if (!a[v] || !b[v]) continue;
+      if (pc(a[v]) === X.b6 && midi(b[v]) !== midi(a[v]) - 1) add(i + 0.5, `${m} : sixte augmentée (${VOIX[v]}) non résolue (cette note descend d'un demi-ton)`);
+      if (pc(a[v]) === X.s4 && midi(b[v]) !== midi(a[v]) + 1) add(i + 0.5, `${m} : sixte augmentée (${VOIX[v]}) non résolue (cette note monte d'un demi-ton)`);
+    }
+  }
   // règles d'un accord de 4 sons complet
   function regles4(ch, A, sens, m, add, i) {
     const steps = ch.map(n => n.s), cnt = x => steps.filter(s => s === x).length;
@@ -121,12 +143,15 @@ const HV = (() => {
   }
 
   // renvoie une liste de {i: indice d'accord (ou de l'enchaînement), msg}
-  function verifier(chords, tonic, allowThird, libres) {
+  function verifier(chords, tonic, allowThird, libres, pedales) {
+    pedales = new Set(pedales || []);
     allowThird = new Set(allowThird || []); libres = new Set(libres || []);
     const errs = [];
     const P = chords.map(ch => ch.map(N));
     const SENS = tonsDe(tonic, chords.length).map(sensibleDe);
-    const INFO = chords.map(info4);
+    const TONS = tonsDe(tonic, chords.length);
+    const VUE = chords.map((ch, i) => vue(ch, pedales.has(i)));
+    const INFO = VUE.map(info4), S6 = chords.map(sixteAug);
     const add = (i, msg) => errs.push({i, msg});
     P.forEach((ch, i) => {
       const m = `accord ${i + 1}`, sens = SENS[i];
@@ -138,8 +163,15 @@ const HV = (() => {
       if (dpos(ch[0]) - dpos(ch[1]) > 7) add(i, `${m} : écart soprano-alto supérieur à l'octave`);
       if (dpos(ch[1]) - dpos(ch[2]) > 7) add(i, `${m} : écart alto-ténor supérieur à l'octave`);
       if (dpos(ch[2]) - dpos(ch[3]) > 11) add(i, `${m} : écart ténor-basse supérieur à la douzième`);
-      const tr = triad(chords[i]);
-      if (!tr) { if (INFO[i]) regles4(ch, INFO[i], sens, m, add, i); else add(i, `${m} : accord non reconnu (vérifie la fondamentale et la tierce)`); }
+      const tr = triad(VUE[i]);
+      if (S6[i]) {
+        const X = S6[i];
+        if (ch.filter(n => pc(n) === X.b6).length > 1 || ch.filter(n => pc(n) === X.s4).length > 1) add(i, `${m} : note de la sixte augmentée doublée`);
+      } else if (pedales.has(i)) {
+        const hs = new Set(ch.slice(0, 3).map(n => n.s));
+        if (tr) { if (hs.size < 3) add(i, `${m} : accord incomplet au-dessus de la pédale`); }
+        else if (!INFO[i] || !['dom', 'o7', 'ø'].includes(INFO[i].q)) add(i, `${m} : accord non reconnu au-dessus de la pédale`);
+      } else if (!tr) { if (INFO[i]) regles4(ch, INFO[i], sens, m, add, i); else add(i, `${m} : accord non reconnu (vérifie la fondamentale et la tierce)`); }
       else {
         const [r, t, f] = tr, steps = ch.map(n => n.s), cnt = x => steps.filter(s => s === x).length;
         const e = etat(chords[i]), q = qualite(chords[i]);
@@ -150,7 +182,8 @@ const HV = (() => {
           if (cnt(r) > 3) add(i, `${m} : fondamentale quadruplée`);
         } else if (e === '6') {
           if (!steps.includes(f) || !steps.includes(r)) add(i, `${m} : accord de sixte incomplet`);
-          if (cnt(t) > 1 && q === 'M') add(i, `${m} : basse doublée dans un accord de sixte majeur`);
+          const napo = racine(chords[i]) === (pc(N(TONS[i] + '4')) + 1) % 12;
+          if (cnt(t) > 1 && q === 'M' && !napo) add(i, `${m} : basse doublée dans un accord de sixte majeur`);
         } else if (e === '64') {
           if (cnt(f) < 2) add(i, `${m} : basse non doublée dans un accord de quarte et sixte`);
           if (!steps.includes(r)) add(i, `${m} : accord de quarte et sixte incomplet`);
@@ -161,7 +194,10 @@ const HV = (() => {
     });
     for (let i = 0; i < P.length - 1; i++) {
       const a = P[i], b = P[i + 1], m = `accords ${i + 1}-${i + 2}`, sens = SENS[i];
-      const ra = racine(chords[i]), meme = ra !== null && ra === racine(chords[i + 1]);
+      const ra = racine(VUE[i]), meme = ra !== null && ra === racine(VUE[i + 1]);
+      if (ra !== null && !S6[i] && !pedales.has(i) && triad(VUE[i]) && qualite(VUE[i]) === 'M' && ra === (pc(N(TONS[i] + '4')) + 1) % 12 && !meme)
+        for (let v = 0; v < 4; v++) if (pc(a[v]) === ra && dpos(b[v]) >= dpos(a[v])) add(i + 0.5, `${m} : 2e degré abaissé (${VOIX[v]}) non résolu (il descend)`);
+      regles6(a, b, S6[i], S6[i + 1], m, add, i);
       for (let u = 0; u < 4; u++) for (let l = u + 1; l < 4; l++) {
         if (midi(a[u]) === midi(b[u]) && midi(a[l]) === midi(b[l])) continue;
         for (const [test, nm0] of [[isP5, '5tes'], [isP8, '8ves']]) {
@@ -197,7 +233,8 @@ const HV = (() => {
   // Même vérification, mais sur une réalisation en cours : les notes absentes valent null.
   // Les règles d'un accord ne s'appliquent qu'aux notes déjà écrites ; doublures et état
   // seulement quand l'accord est complet. Sur une réalisation complète, même résultat que verifier().
-  function verifierPartiel(chords, tonic, allowThird, libres) {
+  function verifierPartiel(chords, tonic, allowThird, libres, pedales) {
+    pedales = new Set(pedales || []);
     libres = new Set(libres || []);
     const complet = ch => ch.every(Boolean);
     const errs = [];
@@ -205,7 +242,7 @@ const HV = (() => {
     const TONS = tonsDe(tonic, chords.length), SENS = TONS.map(sensibleDe);
     chords.forEach((ch, i) => {
       const sens = SENS[i];
-      if (complet(ch)) { verifier([ch], TONS[i], allowThird && new Set(allowThird).has(i) ? [0] : []).forEach(e => add(i, e.msg.replace('accord 1 :', `accord ${i + 1} :`))); return; }
+      if (complet(ch)) { verifier([ch], TONS[i], allowThird && new Set(allowThird).has(i) ? [0] : [], [], pedales.has(i) ? [0] : []).forEach(e => add(i, e.msg.replace('accord 1 :', `accord ${i + 1} :`))); return; }
       const m = `accord ${i + 1}`, P = ch.map(x => x ? N(x) : null);
       P.forEach((n, v) => {
         if (!n) return;
@@ -223,7 +260,11 @@ const HV = (() => {
       const a = chords[i].map(x => x ? N(x) : null), b = chords[i + 1].map(x => x ? N(x) : null), m = `accords ${i + 1}-${i + 2}`;
       const ok = v => a[v] && b[v], sens = SENS[i];
       const ca = complet(chords[i]), cb = complet(chords[i + 1]);
-      const ra = ca ? racine(chords[i]) : null, meme = ra !== null && cb && ra === racine(chords[i + 1]);
+      const va = ca ? vue(chords[i], pedales.has(i)) : null, vb = cb ? vue(chords[i + 1], pedales.has(i + 1)) : null;
+      const ra = ca ? racine(va) : null, meme = ra !== null && cb && ra === racine(vb);
+      if (ca) regles6(a, b, sixteAug(chords[i]), cb ? sixteAug(chords[i + 1]) : null, m, add, i);
+      if (ca && !sixteAug(chords[i]) && !pedales.has(i) && triad(va) && qualite(va) === 'M' && ra === (pc(N(TONS[i] + '4')) + 1) % 12 && !meme)
+        for (let v = 0; v < 4; v++) if (a[v] && b[v] && pc(a[v]) === ra && dpos(b[v]) >= dpos(a[v])) add(i + 0.5, `${m} : 2e degré abaissé (${VOIX[v]}) non résolu (il descend)`);
       for (let u = 0; u < 4; u++) for (let l = u + 1; l < 4; l++) {
         if (!ok(u) || !ok(l)) continue;
         if (midi(a[u]) === midi(b[u]) && midi(a[l]) === midi(b[l])) continue;
@@ -248,7 +289,7 @@ const HV = (() => {
       }
       for (const v of [0, 3])
         if (ok(v) && pc(a[v]) === sens && pc(b[v]) !== (sens + 1) % 12 && pc(b[v]) !== sens && !meme && !libres.has(i)) add(i + 0.5, `${m} : sensible (${VOIX[v]}) non résolue sur la tonique`);
-      regles7(a, b, ca ? info4(chords[i]) : null, cb ? info4(chords[i + 1]) : null, sens, SENS[i + 1], meme, m, add, i);
+      regles7(a, b, ca ? info4(va) : null, cb ? info4(vb) : null, sens, SENS[i + 1], meme, m, add, i);
       for (let v = 0; v < 4; v++) {
         if (!ok(v)) continue;
         const d = dpos(b[v]) - dpos(a[v]), st = midi(b[v]) - midi(a[v]), ad = Math.abs(d), ast = Math.abs(st);
@@ -261,6 +302,6 @@ const HV = (() => {
     }
     return errs;
   }
-  return {N, dpos, midi, pc, nom, texte, triad, etat, qualite, tetrade, info4, racine, familleDominante, sensibleDe, verifier, verifierPartiel, FR, SEMI, TESS, VOIX};
+  return {N, dpos, midi, pc, nom, texte, triad, etat, qualite, tetrade, info4, sixteAug, racine, familleDominante, sensibleDe, verifier, verifierPartiel, FR, SEMI, TESS, VOIX};
 })();
 if (typeof module !== 'undefined') module.exports = HV;

@@ -212,14 +212,19 @@ EXOS_K = {}
 
 
 def base(tok):
-    m = RX.match(tok.rstrip('*').split(']')[-1])
+    tok = tok.rstrip('*').split(']')[-1].split('@')[0]
+    if tok in ('N', 'N6', 'N64'):
+        return 'N'
+    if tok in ('It6', 'Fr6', 'Al6'):
+        return tok
+    m = RX.match(tok)
     deg, dim, chif, cible = m.group(1), m.group(2), m.group(3) or '5', m.group(4)
     b = deg + ('o' if dim else '') + ('7' if chif in ('7', '65', '43', '2') else '9' if chif == '9' else '')
     return b + (f'/{cible}' if cible else '')
 
 
 def joli(tok):
-    return tok.replace('o7', '°7')
+    return {'It6': 'It+6', 'Fr6': 'Fr+6', 'Al6': 'Al+6'}.get(tok, tok.replace('o7', '°7'))
 
 
 GUIDE4 = {
@@ -268,7 +273,8 @@ def faire_exo(dico, nom, typ, plan, t, a, sop=None, basse=None, durees=None, men
         sol = [tuple(c) for c in force]
     tons = [s['ton'][0] for s in seq]
     libres = sorted(i for i, s in enumerate(seq) if s['marche'])
-    assert not check(sol, tons, allow_third=allow, libres=libres)
+    pedales = sorted(i for i, s in enumerate(seq) if s.get('pedale'))
+    assert not check(sol, tons, allow_third=allow, libres=libres, pedales=pedales), check(sol, tons, allow_third=allow, libres=libres, pedales=pedales)
     k = len(sol)
     durees = durees or [4] * k
     degs = [s['label'] for s in seq]
@@ -284,6 +290,8 @@ def faire_exo(dico, nom, typ, plan, t, a, sop=None, basse=None, durees=None, men
         ex['tons'] = tons
     if libres:
         ex['libres'] = libres
+    if pedales:
+        ex['pedales'] = pedales
     if typ in ('bd', 'sb', 'corriger'):
         ex['degres'], ex['chiffres'] = degs, chifs
     if typ == 'bc':
@@ -319,7 +327,7 @@ def faire_exo(dico, nom, typ, plan, t, a, sop=None, basse=None, durees=None, men
     return sol, seq, degs, chifs
 
 
-def chasse4(sol, seq, tons, allow, libres, graine=3, sept=0):
+def chasse4(sol, seq, tons, allow, libres, graine=3, sept=0):  # (sans pédale)
     """Trois fautes de trois sortes, chacune en changeant une note (la basse reste)."""
     import random, itertools
     from graveur import N, midi

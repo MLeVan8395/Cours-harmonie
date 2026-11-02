@@ -1,4 +1,4 @@
-[← La septième diminuée et la neuvième](20-la-septieme-diminuee-et-la-neuvieme.md) · [Sommaire du cahier](README.md)
+[← La septième diminuée et la neuvième](20-la-septieme-diminuee-et-la-neuvieme.md) · [Sommaire du cahier](README.md) · [La sixte napolitaine et les sixtes augmentées →](24-napolitaine-et-sixtes-augmentees.md)
 
 ## Dominantes secondaires et modulation
 
@@ -82,4 +82,4 @@ Basse donnée avec ses accords : écris le soprano, puis l'alto et le ténor.
 
 ---
 
-[← La septième diminuée et la neuvième](20-la-septieme-diminuee-et-la-neuvieme.md) · [Sommaire du cahier](README.md)
+[← La septième diminuée et la neuvième](20-la-septieme-diminuee-et-la-neuvieme.md) · [Sommaire du cahier](README.md) · [La sixte napolitaine et les sixtes augmentées →](24-napolitaine-et-sixtes-augmentees.md)

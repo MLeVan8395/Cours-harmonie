@@ -94,7 +94,7 @@ class Figure:
 
     def __init__(self, staves, voices, beats_per_bar=4, key=0, unit=16, gap=96, final=True,
                  brace=None, labels=None, rows=None, top_texts=None, lines=None, boxes=None,
-                 bars=True, left_labels=None, bottom=None, time=None, top=46, pickup=0):
+                 bars=True, left_labels=None, bottom=None, time=None, top=46, pickup=0, groupe=1):
         self.staves, self.voices = staves, voices
         self.bar, self.key, self.unit, self.gap = beats_per_bar, key, unit, gap
         self.final, self.brace = final, brace
@@ -106,6 +106,7 @@ class Figure:
         self.bottom, self.time, self.top0 = bottom, time, top
         self.rows = rows
         self.pickup = pickup
+        self.groupe = groupe    # durée d'un groupe de croches ligaturées (1 = la noire, 1.5 = la noire pointée)
 
     def svg(self):
         unit, bar = self.unit, self.bar
@@ -114,7 +115,7 @@ class Figure:
         x0 = 16 + (18 if self.left_labels else 0)
         beats = max(sum(e[1] for e in v['events']) for v in self.voices)
         endX = left + beats * unit + 4
-        W = endX + 14
+        W = endX + 30
         top0 = self.top0 + (14 if self.top_texts else 0)
         ys = [top0 + i * self.gap for i in range(len(self.staves))]
         o = []
@@ -220,7 +221,7 @@ class Figure:
             clef = self.staves[p['staff']]['clef']
             col = p['opts'].get('color', INK)
             centered = p['d'] >= bar or p['opts'].get('center')
-            x = left + p['t'] * unit + (unit * min(p['d'], bar) / 2 - 6 if centered else unit * 0.5) + p['dx']
+            x = left + p['t'] * unit + (unit * min(p['d'], bar) / 2 - 6 if centered else unit * 0.5 * min(1, max(p['d'], 0.5))) + p['dx']
             if p['n'] is None:
                 if p['opts'].get('hide'):
                     continue
@@ -229,8 +230,14 @@ class Figure:
                     o.append(f'<rect x="{x - 7}" y="{top + SP}" width="14" height="{H}" fill="{col}"/>')
                 elif p['d'] >= 2:
                     o.append(f'<rect x="{x - 7}" y="{top + 2 * SP - H}" width="14" height="{H}" fill="{col}"/>')
-                else:
+                elif p['d'] >= 1:
                     o.append(glyph('qrest', x - 5, top + 28, 32, col))
+                    if p['d'] == 1.5:
+                        o.append(f'<circle cx="{x + 9}" cy="{top + 15}" r="1.9" fill="{col}"/>')
+                else:
+                    o.append(glyph('erest', x - 5, top + 25, 32, col))
+                    if p['d'] == 0.75:
+                        o.append(f'<circle cx="{x + 9}" cy="{top + 15}" r="1.9" fill="{col}"/>')
                 continue
             n = p['n']
             pp, bot = dpos(n), BOTTOM[clef]
@@ -288,7 +295,7 @@ class Figure:
         # croches : ligaturées par temps et par voix, sinon crochet
         from itertools import groupby
         croches.sort(key=lambda c: (c['vi'], c['t']))
-        for (vi_, beat), grp in groupby(croches, key=lambda c: (c['vi'], int(c['t'] + 1e-9))):
+        for (vi_, beat), grp in groupby(croches, key=lambda c: (c['vi'], int(c['t'] / self.groupe + 1e-9))):
             g = list(grp)
             up = g[0]['up']
             if len(g) == 1:
@@ -304,9 +311,17 @@ class Figure:
             for c, sx in zip(g, xs):
                 o.append(f'<line x1="{sx}" y1="{c["y"]}" x2="{sx}" y2="{by}" stroke="{c["col"]}" stroke-width="1.3"/>')
             o.append(f'<line x1="{xs[0]}" y1="{by}" x2="{xs[-1]}" y2="{by}" stroke="{g[0]["col"]}" stroke-width="4.5"/>')
-            if any(c['d'] <= 0.25 for c in g):
-                b2 = by + (6 if up else -6)
-                o.append(f'<line x1="{xs[0]}" y1="{b2}" x2="{xs[-1]}" y2="{b2}" stroke="{g[0]["col"]}" stroke-width="4.5"/>')
+            for lim, dk in ((0.25, 6), (0.125, 12)):     # 2e et 3e barres (doubles et triples croches)
+                b2 = by + (dk if up else -dk)
+                for k in range(len(g)):
+                    if g[k]['d'] > lim + 1e-9:
+                        continue
+                    voisin = [j for j in (k - 1, k + 1) if 0 <= j < len(g) and g[j]['d'] <= lim + 1e-9]
+                    if k + 1 in voisin:
+                        o.append(f'<line x1="{xs[k]}" y1="{b2}" x2="{xs[k + 1]}" y2="{b2}" stroke="{g[0]["col"]}" stroke-width="4.5"/>')
+                    elif not voisin:     # crochet isolé : petit morceau de barre
+                        dx = 8 if k == 0 or (k + 1 < len(g)) else -8
+                        o.append(f'<line x1="{xs[k]}" y1="{b2}" x2="{xs[k] + dx}" y2="{b2}" stroke="{g[0]["col"]}" stroke-width="4.5"/>')
             ext[0] = min(ext[0], by); ext[1] = max(ext[1], by)
         # liaisons de prolongation
         for vi_, v in enumerate(self.voices):
@@ -357,10 +372,16 @@ class Figure:
         voix = []
         for v in self.voices:
             ev = []
+            lie = False
             for e in v['events']:
                 n, d = e[0], e[1]
-                hide = len(e) > 2 and e[2].get('hide')
-                ev.append((None if (n is None or hide) else midi(N(n)), d))
+                op = e[2] if len(e) > 2 else {}
+                m = None if (n is None or op.get('hide')) else midi(N(n))
+                if lie and ev and m is not None and ev[-1][0] == m:
+                    ev[-1] = (m, ev[-1][1] + d)       # note liée : on la prolonge
+                else:
+                    ev.append((m, d))
+                lie = bool(op.get('tie'))
             voix.append(ev)
         cordes = any(st['clef'] == 'alto' for st in self.staves)
         return {'voix': voix, 'genre': 'quatuor' if cordes else 'choeur'}

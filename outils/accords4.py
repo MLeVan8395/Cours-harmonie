@@ -10,6 +10,9 @@ Symboles d'une phrase (séparés par des espaces) :
     V/V  V7/V  V65/IV   dominante (avec ou sans 7e) d'un autre degré
     VIIo7/V             7e diminuée d'un autre degré
     [Sol] [mi]          les accords suivants sont dans cette tonalité (modulation)
+    N6                  sixte napolitaine (accord majeur sur le 2e degré abaissé, 1er renversement)
+    It6 Fr6 Al6         sixtes augmentées italienne, française, allemande (6e degré abaissé à la basse)
+    IV@Do  V7@Do        accord des trois voix du haut au-dessus d'une pédale (ici Do)
 
 phrase4('I II65 V7 I', 'Do', 0) -> (réalisations, tierces doublées permises, liste des accords)
 """
@@ -41,7 +44,30 @@ def nom_ton(t, a):
     return f'{t} majeur' if mode(t, a) == 'majeur' else f'{t.lower()} mineur'
 
 
+def spec_chroma(tok, tonique, armure):
+    """Sixte napolitaine et sixtes augmentées."""
+    ts, tp = FR.index(tonique.rstrip('#b')), pc_nom(tonique)
+    note = lambda ds, dp: nom((ts + ds) % 7, (tp + dp) % 12)
+    if tok in ('N', 'N6', 'N64'):
+        names = [note(1, 1), note(3, 5), note(5, 8)]
+        e = {'N': '5', 'N6': '6', 'N64': '64'}[tok]
+        return {'tok': tok, 'names': names, 'etat': e, 'label': 'N', 'chiffre': {'5': '5', '6': '6', '64': '6/4'}[e], 'ton': (tonique, armure),
+                'deg': None, 'q': None, 'basse': names[BASSE[e]], 'complet': e != '5'}
+    sp = {'It6': ([note(5, 8), note(0, 0), note(3, 6)], 'It+6', '6+'),
+          'Fr6': ([note(5, 8), note(0, 0), note(1, 2), note(3, 6)], 'Fr+6', '6+/4'),
+          'Al6': ([note(5, 8), note(0, 0), note(2, 3), note(3, 6)], 'Al+6', '6+/5')}[tok]
+    return {'tok': tok, 'names': sp[0], 'etat': 'aug', 'label': sp[1], 'chiffre': sp[2], 'ton': (tonique, armure),
+            'deg': None, 'q': 'aug6', 'basse': sp[0][0], 'complet': True}
+
+
 def spec(tok, tonique, armure):
+    if '@' in tok:     # accord au-dessus d'une pédale
+        acc, ped = tok.split('@')
+        sp = spec(acc, tonique, armure)
+        sp.update({'tok': tok, 'pedale': ped, 'basse': ped, 'chiffre': ''})
+        return sp
+    if tok in ('N', 'N6', 'N64', 'It6', 'Fr6', 'Al6'):
+        return spec_chroma(tok, tonique, armure)
     m = RX.match(tok)
     assert m, tok
     deg, dim, chif, cible = m.group(1), m.group(2), m.group(3) or '5', m.group(4)
@@ -127,6 +153,7 @@ def phrase4(plan, tonique='Do', armure=0, soprano_fin=True, n=1, sop_max='Fa5', 
     seq = lire(plan, tonique, armure)
     tons = [s['ton'][0] for s in seq]
     libres = {i for i, s in enumerate(seq) if s['marche']}
+    pedales = {i for i, s in enumerate(seq) if s.get('pedale')}
     allow = set()
     for i, s in enumerate(seq):   # VI relié à V : tierce doublée permise
         if s['deg'] == 5 and s['q'] is None and s['etat'] == '5' and any(
@@ -148,11 +175,23 @@ def phrase4(plan, tonique='Do', armure=0, soprano_fin=True, n=1, sop_max='Fa5', 
             besoin.add(step_alt(names[3])[0])
         if len(names) == 5:
             besoin.add(step_alt(names[4])[0])
-        if s['etat'] not in ('5', '7', '9'):
+        if s['etat'] not in ('5', '7', '9') or s.get('complet') or s.get('pedale'):
             besoin.add(step_alt(names[2])[0])
+        if s.get('pedale') and len(names) >= 4:
+            besoin.discard(step_alt(names[2])[0])
         vs = []
         for b in bs:
-            for v in voicings(names, bass=b, sop=sop[i] if sop else None, tonic=tons[i], allow=i in allow):
+            if s.get('pedale'):
+                pools = [notes_in_range([step_alt(x) for x in names], *TESS[v]) for v in ('soprano', 'alto', 'ténor')]
+                if sop:
+                    pools[0] = [sop[i]]
+                gen = [(x, y, z, b) for x in pools[0] for y in pools[1] for z in pools[2]]
+                gen = [v for v in gen if not check([v], tons[i], pedales={0})]
+            else:
+                gen = voicings(names, bass=b, sop=sop[i] if sop else None, tonic=tons[i], allow=i in allow)
+            for v in gen:
+                if s.get('pedale') and not besoin <= {N(x)['s'] for x in v[:3]}:
+                    continue
                 if not sop and (midi(N(v[0])) > midi(N(sop_max)) or midi(N(v[0])) < midi(N(sop_min))):
                     continue
                 if not besoin <= {N(x)['s'] for x in v}:
@@ -165,7 +204,10 @@ def phrase4(plan, tonique='Do', armure=0, soprano_fin=True, n=1, sop_max='Fa5', 
     @lru_cache(maxsize=None)
     def ok(i, u, v):
         al = {k for k, j in ((0, i - 1), (1, i)) if j in allow}
-        return not check([u, v], [tons[i - 1], tons[i]], allow_third=al, libres={0} if i - 1 in libres else ())
+        if i in pedales and u[3] != v[3]:
+            return False
+        return not check([u, v], [tons[i - 1], tons[i]], allow_third=al, libres={0} if i - 1 in libres else (),
+                         pedales={k for k, j in ((0, i - 1), (1, i)) if j in pedales})
 
     def cout(i, u, v):
         c = sum(abs(midi(N(x)) - midi(N(y))) for x, y in zip(u[1:3], v[1:3])) + penal(v)
@@ -194,7 +236,7 @@ def phrase4(plan, tonique='Do', armure=0, soprano_fin=True, n=1, sop_max='Fa5', 
         raise ValueError('pas de réalisation : ' + plan)
     out = res[:n]
     for c, p in out:
-        assert not check(p, tons, allow_third=allow, libres=libres), check(p, tons, allow_third=allow, libres=libres)
+        assert not check(p, tons, allow_third=allow, libres=libres, pedales=pedales), check(p, tons, allow_third=allow, libres=libres, pedales=pedales)
     return [p for c, p in out], allow, seq
 
 

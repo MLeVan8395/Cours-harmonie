@@ -18,5 +18,8 @@ Dans la version web (`cahier.html`), on fait les exercices **directement sur la 
 - [Les septièmes d'espèce et les marches](19-les-septiemes-d-espece.md) (chapitre 19 du cours) : 3 × basse chiffrée, 2 × basse donnée, 1 × chant donné, 1 × chasse aux fautes
 - [La septième diminuée et la neuvième](20-la-septieme-diminuee-et-la-neuvieme.md) (chapitre 20 du cours) : 2 × basse chiffrée, 2 × basse donnée, 1 × chant donné
 - [Dominantes secondaires et modulation](21-dominantes-secondaires-et-modulation.md) (chapitre 21 du cours) : 3 × basse chiffrée, 1 × chant donné, 2 × basse donnée
+- [La sixte napolitaine et les sixtes augmentées](24-napolitaine-et-sixtes-augmentees.md) (chapitre 24 du cours) : 6 × basse chiffrée, 1 × chant donné
+- [Pédales et cadences classiques](25-pedales-et-cadences.md) (chapitre 25 du cours) : 2 × basse donnée, 2 × basse chiffrée, 1 × chant donné
+- [Écrire pour quatuor à cordes](26-ecrire-pour-quatuor.md) (chapitre 26 du cours) : 2 × basse chiffrée, 1 × basse donnée, 1 × chant donné
 
-**80 exercices** en tout, dont 22 basses données, 13 chants donnés, 10 exercices sur le choral et 26 sur les accords de quatre sons. Tous les corrigés sont contrôlés par le vérificateur du cours.
+**96 exercices** en tout, dont 22 basses données, 13 chants donnés, 10 exercices sur le choral, 26 sur les accords de quatre sons et 16 sur le style classique. Tous les corrigés sont contrôlés par le vérificateur du cours.

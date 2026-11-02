@@ -1,4 +1,4 @@
-[← 22. Exercices](22-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 22. Exercices](22-exercices.md) · [Sommaire](../README.md#sommaire) · [24. La sixte napolitaine et les sixtes augmentées →](24-la-sixte-napolitaine-et-les-sixtes-augmentees.md)
 
 ## 23. Corrigés
 
@@ -65,4 +65,4 @@ Le V7/V (D7) apporte Fa♯, qui monte sur Sol, et sa 7e Do descend sur Si. Aprè
 
 ---
 
-[← 22. Exercices](22-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 22. Exercices](22-exercices.md) · [Sommaire](../README.md#sommaire) · [24. La sixte napolitaine et les sixtes augmentées →](24-la-sixte-napolitaine-et-les-sixtes-augmentees.md)

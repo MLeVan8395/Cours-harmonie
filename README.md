@@ -13,7 +13,7 @@ Auteur : Mickael Le Van, professeur de musiques actuelles et jazz.
 Une appli web installable sur téléphone, tablette ou ordinateur, qui marche ensuite **hors connexion**. Elle réunit :
 
 - **Cours** : tous les chapitres, avec un lecteur sous chaque exemple (sons de banque General MIDI : chœur, piano, orgue, quatuor à cordes) ;
-- **Cahier d'exercices** : les 80 exercices, à faire directement sur la portée, corrigés au fur et à mesure ; la progression est enregistrée ;
+- **Cahier d'exercices** : les 96 exercices, à faire directement sur la portée, corrigés au fur et à mesure ; la progression est enregistrée ;
 - **Chiffrer** : trouver le degré et l'état (5, 6, 6/4) d'un accord, dans toutes les tonalités du cours (160 accords) ;
 - **Chasse aux fautes** : deux accords, une faute à trouver (quintes, octaves, croisement, doublure, sensible…), ou aucune (150 enchaînements) ;
 - **Cadences à l'oreille** : écouter une phrase et reconnaître la cadence (parfaite, imparfaite, demi, plagale, rompue) ;
@@ -37,7 +37,7 @@ Pour la mettre en ligne : dans les réglages du dépôt, **Settings → Pages**,
 | [`cours/images/`](cours/images/) | Les exemples et exercices gravés (PNG) |
 | [`cours/audio/`](cours/audio/) | Chaque exemple en MP3 et en MIDI |
 | [`index.html`](index.html) | La version web du cours, avec un lecteur sous chaque exemple |
-| [`cahier/`](cahier/README.md) | Le **cahier d'exercices** : 80 exercices qui suivent le cours, avec leurs corrigés |
+| [`cahier/`](cahier/README.md) | Le **cahier d'exercices** : 96 exercices qui suivent le cours, avec leurs corrigés |
 | [`cahier.html`](cahier.html) | La version web du cahier : tous les exercices à faire sur la portée |
 | [`app/`](app/) | L'application **Atelier d'harmonie** (PWA installable, hors connexion) |
 | [`outils/`](outils/) | Le graveur, le vérificateur de règles et les outils audio |
@@ -81,14 +81,14 @@ Les chapitres marqués ✅ sont rédigés. Les autres sont prévus : le plan peu
 - [22. Exercices](cours/22-exercices.md)
 - [23. Corrigés](cours/23-corriges.md)
 
-### Cinquième partie : le style classique (Mozart, Beethoven)
+### Cinquième partie : le style classique (Mozart, Beethoven) ✅
 
-- 24\. La sixte napolitaine et les sixtes augmentées
-- 25\. Pédales et formules de cadence classiques
-- 26\. Écrire pour quatuor à cordes : doubles cordes, figuration, accompagnement
-- 27\. Analyse : un mouvement lent de quatuor ou de sonate
-- 28\. Exercices
-- 29\. Corrigés
+- [24. La sixte napolitaine et les sixtes augmentées](cours/24-la-sixte-napolitaine-et-les-sixtes-augmentees.md) : N6, sixtes italienne, française et allemande, quintes « de Mozart »
+- [25. Pédales et formules de cadence classiques](cours/25-pedales-et-formules-de-cadence.md) : pédales de tonique et de dominante, la grande cadence, la demi-cadence phrygienne, la coda
+- [26. Écrire pour quatuor à cordes](cours/26-ecrire-pour-quatuor-a-cordes.md) : tessitures, batteries, basse en octaves, doubles cordes
+- [27. Analyse : Beethoven, quatuor op. 18 n° 1, Adagio](cours/27-analyse-beethoven-op18-n1.md) : les neuf premières mesures
+- [28. Exercices](cours/28-exercices.md)
+- [29. Corrigés](cours/29-corriges.md)
 
 ### Sixième partie : le romantisme (Schumann, Chopin)
 
@@ -120,7 +120,7 @@ Pour mettre la version web en ligne gratuitement : dans les réglages du dépôt
 
 ## Le cahier d'exercices
 
-À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15), accords de quatre sons (18-21). Il compte **80 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés, 10 exercices sur le choral (orner une phrase, harmoniser une mélodie) et 26 exercices sur les accords de 7e, la 9e, les dominantes secondaires et la modulation, en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
+À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15), accords de quatre sons (18-21), style classique (24-26). Il compte **96 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés, 10 exercices sur le choral (orner une phrase, harmoniser une mélodie) 26 exercices sur les accords de 7e, la 9e, les dominantes secondaires et la modulation, et 16 sur la sixte napolitaine, les sixtes augmentées, les pédales et l'écriture pour quatuor, en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
 
 Les exercices sont fabriqués par `outils/build_cahier.py` : pour chaque phrase (degrés, états, basse ou mélodie), le générateur (`outils/generateur.py`) calcule une réalisation sans faute, contrôlée par le vérificateur. Pour ajouter un exercice, il suffit d'une ligne dans le catalogue de ce fichier.
 
@@ -164,7 +164,7 @@ Tous les exemples du cours sont produits par de petits programmes Python :
 - Les règles suivent la tradition des traités d'harmonie français (Théodore Dubois, *Traité d'harmonie théorique et pratique*, 1921) et la pratique du choral de J.-S. Bach.
 - Les sons viennent de la banque General MIDI **FluidR3_GM** (Frank Wen, licence MIT), dans la version « une note par fichier » de Benjamin Gleitzman : [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) (licence MIT). Pour regénérer les MP3 : récupérer les dossiers `FluidR3_GM/choir_aahs-mp3`, `violin-mp3`, `viola-mp3` et `cello-mp3` de ce dépôt, puis `python3 outils/audio.py CHEMIN/VERS/FluidR3_GM`.
 - Les symboles musicaux (clés, altérations) viennent des polices GNU FreeFont (FreeSerif) et DejaVu Sans, comme dans le Cours de contrepoint. La clé d'ut est dessinée à la main.
-- Tous les exemples des trois premières parties ont été écrits pour ce cours, sauf le choral BWV 269 de J.-S. Bach (chapitre 14), regravé d'après le fichier MusicXML du [corpus music21](https://github.com/cuthbertLab/music21) (licence BSD, œuvre du domaine public). Les extraits d'œuvres des parties suivantes (Bach, Mozart, Beethoven, Schumann, Fauré, Debussy, Ravel) seront regravés pour le cours, à partir d'œuvres du domaine public.
+- Tous les exemples ont été écrits pour ce cours, sauf deux extraits regravés d'après les fichiers MusicXML du [corpus music21](https://github.com/cuthbertLab/music21) (licence BSD, œuvres du domaine public) : le choral BWV 269 de J.-S. Bach (chapitre 14) et le début de l'Adagio du quatuor op. 18 n° 1 de Beethoven (chapitre 27). Les extraits des parties suivantes (Schumann, Fauré, Debussy, Ravel) seront regravés de la même façon.
 
 ## Licence
 

@@ -82,11 +82,31 @@ def tetrade(ch):
     return None
 
 
+def sixte_aug(ch):
+    """Accord de sixte augmentée (italienne, française, allemande) : dict(type, b6, s4) ou None.
+    b6 : pc de la note grave de la sixte augmentée (6e degré abaissé), s4 : pc de la note haute (4e degré haussé)."""
+    L = [N(x) for x in ch[:4] if x]
+    for a in L:
+        for b in L:
+            if (b['s'] - a['s']) % 7 == 5 and (pc(b) - pc(a)) % 12 == 10:
+                pa = pc(a)
+                rest = {(pc(n) - pa) % 12 for n in L} - {0, 10}
+                t = {frozenset({4}): 'it', frozenset({4, 6}): 'fr', frozenset({4, 7}): 'al'}.get(frozenset(rest))
+                if t:
+                    return {'type': t, 'b6': pa, 's4': pc(b)}
+    return None
+
+
+def vue(ch, ped):
+    """Accord tel qu'on l'analyse : sur une pédale, seulement les trois voix du haut (le ténor sert de basse)."""
+    return (tuple(ch[:3]) + (ch[2],)) if ped else tuple(ch[:4])
+
+
 def info4(ch):
     """Description d'un accord de 4 sons : dict(r, t, f, s, nn, q, etat, pcs) ou None.
     q : 'dom' (7e de dominante), 'M7', 'm7', 'ø' (7e de sensible, mineure), 'o7' (7e diminuée), '?'."""
     te = tetrade(ch)
-    if te is None or triad(ch) is not None:
+    if te is None or triad(ch) is not None or sixte_aug(ch) is not None:
         return None
     r, t, f, s, nn = te
     notes = {N(x)['s']: N(x) for x in ch[:4]}
@@ -128,12 +148,14 @@ def famille_dominante(A, sens):
     return None
 
 
-def check(chords, tonic='Do', allow_third=(), libres=(), **_):
+def check(chords, tonic='Do', allow_third=(), libres=(), pedales=(), **_):
     errs = []
     P = [[N(x) for x in ch[:4]] for ch in chords]
     tons = list(tonic) if isinstance(tonic, (list, tuple)) else [tonic] * len(chords)
     SENS = [sensible_de(t) for t in tons]
-    INFO = [info4(ch) for ch in chords]
+    VUE = [vue(ch, i in pedales) for i, ch in enumerate(chords)]
+    INFO = [info4(ch) for ch in VUE]
+    S6 = [sixte_aug(ch) for ch in chords]
     for i, ch in enumerate(P):
         m = f'accord {i + 1}'
         sens_pc = SENS[i]
@@ -150,10 +172,22 @@ def check(chords, tonic='Do', allow_third=(), libres=(), **_):
             errs.append(f'{m} : écart alto-ténor supérieur à l\'octave')
         if dpos(ch[2]) - dpos(ch[3]) > 11:
             errs.append(f'{m} : écart ténor-basse supérieur à la douzième')
-        tr = triad(chords[i])
+        tr = triad(VUE[i])
         A = INFO[i]
         steps = [n['s'] for n in ch]
-        if tr is not None:
+        if S6[i] is not None:
+            X = S6[i]
+            if sum(1 for n in ch if pc(n) == X['b6']) > 1 or sum(1 for n in ch if pc(n) == X['s4']) > 1:
+                errs.append(f'{m} : note de la sixte augmentée doublée')
+        elif i in pedales:
+            haut = [N(x) for x in chords[i][:3]]
+            hs = {n['s'] for n in haut}
+            if tr is not None:
+                if len(hs) < 3:
+                    errs.append(f'{m} : accord incomplet au-dessus de la pédale')
+            elif A is None or A['q'] not in ('dom', 'o7', 'ø'):
+                errs.append(f'{m} : accord non reconnu au-dessus de la pédale')
+        elif tr is not None:
             r, t, f = tr
             e = etat(chords[i])
             q = qualite(chords[i])
@@ -169,7 +203,8 @@ def check(chords, tonic='Do', allow_third=(), libres=(), **_):
             elif e == '6':
                 if f not in steps or r not in steps:
                     errs.append(f'{m} : accord de sixte incomplet')
-                if steps.count(t) > 1 and q == 'M':
+                napo = racine(chords[i]) == (pc(N(tons[i] + '4')) + 1) % 12
+                if steps.count(t) > 1 and q == 'M' and not napo:
                     errs.append(f'{m} : basse doublée dans un accord de sixte majeur')
             elif e == '64':
                 if steps.count(f) < 2:
@@ -211,7 +246,21 @@ def check(chords, tonic='Do', allow_third=(), libres=(), **_):
         A, B = INFO[i], INFO[i + 1]
         sens_pc = SENS[i]
         m = f'accords {i + 1}-{i + 2}'
-        ra, rb = racine(chords[i]), racine(chords[i + 1])
+        ra, rb = racine(VUE[i]), racine(VUE[i + 1])
+        # sixte napolitaine : le 2e degré abaissé descend
+        if ra is not None and S6[i] is None and i not in pedales and triad(VUE[i]) is not None and qualite(VUE[i]) == 'M' \
+                and ra == (pc(N(tons[i] + '4')) + 1) % 12 and not meme_r(ra, rb):
+            for v in range(4):
+                if pc(a[v]) == ra and dpos(b[v]) >= dpos(a[v]):
+                    errs.append(f'{m} : 2e degré abaissé ({VOIX[v]}) non résolu (il descend)')
+        # sixte augmentée : les deux notes s'écartent d'un demi-ton vers l'octave de la dominante
+        X = S6[i]
+        if X is not None and not (S6[i + 1] is not None and S6[i + 1]['b6'] == X['b6']):
+            for v in range(4):
+                if pc(a[v]) == X['b6'] and midi(b[v]) != midi(a[v]) - 1:
+                    errs.append(f'{m} : sixte augmentée ({VOIX[v]}) non résolue (cette note descend d\'un demi-ton)')
+                if pc(a[v]) == X['s4'] and midi(b[v]) != midi(a[v]) + 1:
+                    errs.append(f'{m} : sixte augmentée ({VOIX[v]}) non résolue (cette note monte d\'un demi-ton)')
         meme = ra is not None and ra == rb
         for u in range(4):
             for l in range(u + 1, 4):
@@ -275,8 +324,14 @@ def check(chords, tonic='Do', allow_third=(), libres=(), **_):
     return errs
 
 
+def meme_r(ra, rb):
+    return ra is not None and ra == rb
+
+
 def racine(ch):
     """pc de la fondamentale (accord de 3 ou de 4 sons), ou None."""
+    if sixte_aug(ch) is not None:
+        return None
     tr = triad(ch)
     if tr is not None:
         return next(pc(N(x)) for x in ch[:4] if N(x)['s'] == tr[0])

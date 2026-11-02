@@ -402,7 +402,7 @@ const Atelier = (() => {
     return {errs, conseils};
   }
   function fautesNotes(E) {
-    const ex = E.ex, errs = HV.verifierPartiel(E.notes, ex.tons || ex.tonique, tierceVoulue(E), ex.libres);
+    const ex = E.ex, errs = HV.verifierPartiel(E.notes, ex.tons || ex.tonique, tierceVoulue(E), ex.libres, ex.pedales);
     const conseils = [];
     // chaque note doit appartenir à l'accord attendu
     E.notes.forEach((ch, i) => {
@@ -491,7 +491,7 @@ const Atelier = (() => {
       if (roles[i + ',' + v + ',0'] === 'R' || !b) return a;
       return roles[i + ',' + v + ',1'] === 'R' ? b : a;
     }));
-    HV.verifierPartiel(sq, ex.tons || ex.tonique, tierceVoulue(E), ex.libres).forEach(e => errs.push(e));
+    HV.verifierPartiel(sq, ex.tons || ex.tonique, tierceVoulue(E), ex.libres, ex.pedales).forEach(e => errs.push(e));
     // quintes et octaves créées par les notes étrangères (entre attaques successives)
     const attaques = [...new Set(parVoix.flat().map(a => +a.t.toFixed(4)))].sort((a, b) => a - b);
     const son = (v, tt) => { const a = parVoix[v].find(a => a.t - 1e-9 <= tt && tt < a.t + a.d - 1e-9); return a ? a.n : null; };
