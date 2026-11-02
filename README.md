@@ -90,22 +90,37 @@ Les chapitres marqués ✅ sont rédigés. Les autres sont prévus : le plan peu
 - [28. Exercices](cours/28-exercices.md)
 - [29. Corrigés](cours/29-corriges.md)
 
-### Sixième partie : le romantisme (Schumann, Chopin)
+### Sixième partie : le premier romantisme (Schumann, Chopin, Brahms)
 
-- 30\. Le chromatisme : notes de passage chromatiques, accords altérés
-- 31\. Enharmonie et modulations éloignées (la 7e diminuée « pivot »)
-- 32\. Analyse : une pièce de l'*Album pour la jeunesse* de Schumann
-- 33\. Exercices
-- 34\. Corrigés
+- 30\. L'emprunt au mode mineur et les modulations par tierces
+- 31\. Le chromatisme : notes de passage chromatiques, accords altérés
+- 32\. De l'écriture pianistique aux quatre voix (Schumann, Chopin)
+- 33\. Analyse : une pièce de l'*Album pour la jeunesse* de Schumann, un choral de Brahms
+- 34\. Exercices
+- 35\. Corrigés
 
-### Septième partie : vers l'harmonie moderne (Fauré, Debussy, Ravel)
+### Septième partie : le romantisme tardif (Liszt, Wagner, Franck, Mahler)
 
-- 35\. Fauré : couleurs modales, glissements, modulations inattendues
-- 36\. Debussy : accords parallèles, gamme par tons, pentatonique, modes
-- 37\. Ravel : accords de 9e, 11e et 13e, écriture pour cordes
-- 38\. Des accords classés aux accords de couleur : le pont vers l'harmonie jazz
-- 39\. Exercices
-- 40\. Corrigés
+- 36\. Enharmonie et modulations éloignées (la 7e diminuée et la sixte augmentée « pivots »)
+- 37\. L'accord augmenté et l'harmonie par tierces (Liszt)
+- 38\. Wagner : l'accord de Tristan, la résolution repoussée, le glissement chromatique
+- 39\. Franck et Mahler : chromatisme, mélange majeur/mineur, tonalité progressive
+- 40\. Analyse : le début du Prélude de *Tristan et Isolde* ; l'Adagietto de la 5e symphonie de Mahler
+- 41\. Exercices
+- 42\. Corrigés
+
+### Huitième partie : vers l'harmonie moderne (Fauré, Debussy, Ravel)
+
+- 43\. Fauré : couleurs modales, glissements, modulations inattendues
+- 44\. Debussy : accords parallèles, gamme par tons, pentatonique, modes
+- 45\. Ravel : accords de 9e, 11e et 13e, écriture pour cordes
+- 46\. Des accords classés aux accords de couleur : le pont vers l'harmonie jazz
+- 47\. Exercices
+- 48\. Corrigés
+
+### Prolongement possible : le XXe siècle (Scriabine, Stravinsky, Prokofiev, Messiaen, Dutilleux)
+
+Accord mystique et harmonie en quartes, bitonalité et échelle octatonique, modes à transposition limitée, accords pivots. Pour les compositeurs dont les œuvres sont encore protégées, les exemples seront originaux, avec des références précises pour l'écoute.
 
 **Le quatuor à cordes, fil rouge** : chaque partie se termine par un exercice de transcription ou d'écriture pour quatuor (violon 1, violon 2, alto, violoncelle). À partir de la cinquième partie, le quatuor devient le format principal.
 
