@@ -28,5 +28,15 @@ Dans la version web (`cahier.html`), on fait les exercices **directement sur la 
 - [L'accord augmenté et les tierces](37-modulations-par-tierces.md) (chapitre 37 du cours) : 2 × basse donnée
 - [Wagner : cadences évitées et glissements](38-wagner.md) (chapitre 38 du cours) : 1 × basse chiffrée, 1 × basse donnée
 - [Franck et Mahler : majeur et mineur](39-majeur-et-mineur.md) (chapitre 39 du cours) : 1 × chant donné, 1 × basse chiffrée
+- [Fauré : modes et glissements](43-faure.md) (chapitre 43 du cours) : 2 × écriture libre
+- [Debussy : accords parallèles, gamme par tons](44-debussy.md) (chapitre 44 du cours) : 3 × écriture libre
+- [Ravel : 7e, 9e et 13e](45-ravel.md) (chapitre 45 du cours) : 2 × écriture libre
+- [Vers le jazz : II-V-I et substitutions](46-vers-le-jazz.md) (chapitre 46 du cours) : 3 × écriture libre
+- [Scriabine : l'accord mystique](49-scriabine.md) (chapitre 49 du cours) : 2 × écriture libre
+- [Bartók : miroirs et échelles](50-bartok.md) (chapitre 50 du cours) : 2 × écriture libre
+- [Stravinsky : deux accords à un triton](51-stravinsky.md) (chapitre 51 du cours) : 1 × écriture libre
+- [Prokofiev : les accords « à côté »](52-prokofiev.md) (chapitre 52 du cours) : 1 × écriture libre
+- [Messiaen : le mode 2 et son accord](53-messiaen.md) (chapitre 53 du cours) : 2 × écriture libre
+- [Dutilleux : la note pivot](54-dutilleux.md) (chapitre 54 du cours) : 1 × écriture libre
 
-**116 exercices** en tout, dont 22 basses données, 13 chants donnés, 10 exercices sur le choral, 26 sur les accords de quatre sons, 16 sur le style classique, 11 sur le premier romantisme et 9 sur le romantisme tardif. Tous les corrigés sont contrôlés par le vérificateur du cours.
+**135 exercices** en tout, dont 22 basses données, 13 chants donnés, 10 exercices sur le choral, 26 sur les accords de quatre sons, 16 sur le style classique, 11 sur le premier romantisme, 9 sur le romantisme tardif, 10 sur Fauré, Debussy, Ravel et le jazz, et 9 sur le XXe siècle. Tous les corrigés sont contrôlés par le vérificateur du cours.

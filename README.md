@@ -3,7 +3,7 @@
 > 📱 **L'appli Atelier d'harmonie : [mlevan8395.github.io/Cours-harmonie/app](https://mlevan8395.github.io/Cours-harmonie/app/)**  
 > Cours, cahier d'exercices sur la portée, chiffrage, chasse aux fautes, cadences à l'oreille et quiz. Installable sur téléphone, fonctionne hors connexion.
 
-Un cours d'harmonie à quatre voix pour débutants, en français : du choral de Bach à l'harmonie de Fauré, Debussy et Ravel, en passant par Mozart, Beethoven et Schumann. On écrit pour le **quatuor vocal** (soprano, alto, ténor, basse) et pour le **quatuor à cordes**. Chaque chapitre contient des explications simples, des exemples gravés, des exercices et leurs corrigés.
+Un cours d'harmonie à quatre voix pour débutants, en français : du choral de Bach à Messiaen et Dutilleux, en passant par Mozart, Beethoven, Schumann, Wagner, Debussy, Ravel et le pont vers le jazz. On écrit pour le **quatuor vocal** (soprano, alto, ténor, basse) et pour le **quatuor à cordes**. Chaque chapitre contient des explications simples, des exemples gravés, des exercices et leurs corrigés.
 
 Ce cours fait suite au [Cours de contrepoint](https://github.com/MLeVan8395/Cours-contrepoint) : le contrepoint t'a appris à écrire des lignes indépendantes, l'harmonie t'apprend à les faire sonner ensemble, accord après accord.
 
@@ -112,18 +112,27 @@ Les chapitres marqués ✅ sont rédigés. Les autres sont prévus : le plan peu
 - [41. Exercices](cours/41-exercices.md)
 - [42. Corrigés](cours/42-corriges.md)
 
-### Huitième partie : vers l'harmonie moderne (Fauré, Debussy, Ravel)
+### Huitième partie : vers l'harmonie moderne (Fauré, Debussy, Ravel, le jazz) ✅
 
-- 43\. Fauré : couleurs modales, glissements, modulations inattendues
-- 44\. Debussy : accords parallèles, gamme par tons, pentatonique, modes
-- 45\. Ravel : accords de 9e, 11e et 13e, écriture pour cordes
-- 46\. Des accords classés aux accords de couleur : le pont vers l'harmonie jazz
-- 47\. Exercices
-- 48\. Corrigés
+- [43. Fauré](cours/43-faure-couleurs-modales.md) : couleurs modales, glissements, modulations éclair
+- [44. Debussy](cours/44-debussy.md) : gamme par tons, pentatonique, modes, accords parallèles
+- [45. Ravel](cours/45-ravel.md) : accords de 9e, 11e et 13e, la 7e majeure, écrire pour quatuor
+- [46. Vers le jazz](cours/46-vers-le-jazz.md) : symboles, notes guides, voicings sans fondamentale, substitution tritonique, accords en quartes
+- [47. Exercices](cours/47-exercices.md)
+- [48. Corrigés](cours/48-corriges.md)
 
-### Prolongement possible : le XXe siècle (Scriabine, Bartók, Stravinsky, Prokofiev, Messiaen, Dutilleux)
+### Neuvième partie : le XXe siècle (Scriabine, Bartók, Stravinsky, Prokofiev, Messiaen, Dutilleux) ✅
 
-Accord mystique et harmonie en quartes, l'écriture des quatuors de Bartók (système des axes, échelles acoustique et octatonique, symétries, clusters), bitonalité, modes à transposition limitée, accords pivots. Pour les compositeurs dont les œuvres sont encore protégées, les exemples seront originaux, avec des références précises pour l'écoute.
+- [49. Scriabine](cours/49-scriabine.md) : la dominante à quinte abaissée, l'accord mystique
+- [50. Bartók et les quatuors](cours/50-bartok-et-les-quatuors.md) : échelles acoustique et octatonique, système des axes, miroirs, guide d'écoute des six quatuors
+- [51. Stravinsky](cours/51-stravinsky.md) : bitonalité (*Petrouchka*), l'accord du *Sacre*, l'ostinato
+- [52. Prokofiev](cours/52-prokofiev.md) : la tonalité qui fait des écarts
+- [53. Messiaen](cours/53-messiaen.md) : modes à transposition limitée, valeurs ajoutées, *Quatuor pour la fin du Temps*
+- [54. Dutilleux](cours/54-dutilleux.md) : notes pivots, symétries, *Ainsi la nuit*
+- [55. Exercices](cours/55-exercices.md)
+- [56. Corrigés](cours/56-corriges.md)
+
+Pour les compositeurs dont les œuvres sont encore protégées (Stravinsky, Prokofiev, Messiaen, Dutilleux), les exemples sont originaux ou se limitent à un accord, avec des guides d'écoute précis.
 
 **Le quatuor à cordes, fil rouge** : chaque partie se termine par un exercice de transcription ou d'écriture pour quatuor (violon 1, violon 2, alto, violoncelle). À partir de la cinquième partie, le quatuor devient le format principal.
 
@@ -138,7 +147,7 @@ Pour mettre la version web en ligne gratuitement : dans les réglages du dépôt
 
 ## Le cahier d'exercices
 
-À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15), accords de quatre sons (18-21), style classique (24-26), premier romantisme (30-32), romantisme tardif (36-39). Il compte **116 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés, 10 exercices sur le choral (orner une phrase, harmoniser une mélodie) 26 exercices sur les accords de 7e, la 9e, les dominantes secondaires et la modulation, 16 sur la sixte napolitaine, les sixtes augmentées, les pédales et l'écriture pour quatuor, 11 sur les emprunts, le chromatisme et l'écriture pianistique, et 9 sur l'enharmonie, les modulations éloignées et le mélange majeur/mineur, en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
+À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15), accords de quatre sons (18-21), style classique (24-26), premier romantisme (30-32), romantisme tardif (36-39), Fauré, Debussy, Ravel et le jazz (43-46), XXe siècle (49-54). Il compte **135 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés, 10 exercices sur le choral (orner une phrase, harmoniser une mélodie) 26 exercices sur les accords de 7e, la 9e, les dominantes secondaires et la modulation, 16 sur la sixte napolitaine, les sixtes augmentées, les pédales et l'écriture pour quatuor, 11 sur les emprunts, le chromatisme et l'écriture pianistique, 9 sur l'enharmonie, les modulations éloignées et le mélange majeur/mineur, 10 sur les accords parallèles, les 9e et 13e et le II-V-I, et 9 sur le XXe siècle (miroirs, échelles, modes de Messiaen, notes pivots), en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
 
 Les exercices sont fabriqués par `outils/build_cahier.py` : pour chaque phrase (degrés, états, basse ou mélodie), le générateur (`outils/generateur.py`) calcule une réalisation sans faute, contrôlée par le vérificateur. Pour ajouter un exercice, il suffit d'une ligne dans le catalogue de ce fichier.
 
@@ -150,6 +159,7 @@ Dans la version web du cahier (`cahier.html`), et pour les exercices d'écriture
 - **▶ Écouter** joue la réalisation ;
 - la **correction se fait au fil de l'écriture** : à chaque note posée, les fautes apparaissent (colonnes en rouge pour un accord, en orange pour un enchaînement, liste en dessous), avec des conseils (💡) qui ne sont pas des fautes. Une note qui n'appartient pas à l'accord demandé est signalée tout de suite. Pour les chasses aux fautes, la correction attend le bouton **✔ Vérifier** ;
 - dans le **cahier d'exercices**, les basses données et les chants donnés sont **guidés pas à pas** : 1) choisir les degrés dans un menu sous chaque accord ; 2) écrire le soprano (basse donnée) ou la basse (chant donné) ; 3) compléter l'alto et le ténor. Chaque étape se débloque quand la précédente est juste ;
+- à partir de la huitième partie (Debussy, Ravel, le jazz, le XXe siècle), le correcteur change de règles : il vérifie que chaque accord contient les notes demandées (accords de 9e, de 13e, gamme par tons, mode 2, miroir…), et, pour les accords parallèles, que la disposition est recopiée ; les quintes parallèles ne sont plus des fautes ;
 - **Voir une solution** (ou **Solution de cette étape**) affiche le corrigé ; **Recommencer** efface.
 
 Le travail de l'élève est gardé dans son navigateur. La correction utilise `outils/verif.js`, traduction exacte du vérificateur Python (testée sur 400 enchaînements tirés au hasard : mêmes fautes, mêmes messages).
@@ -182,7 +192,7 @@ Tous les exemples du cours sont produits par de petits programmes Python :
 - Les règles suivent la tradition des traités d'harmonie français (Théodore Dubois, *Traité d'harmonie théorique et pratique*, 1921) et la pratique du choral de J.-S. Bach.
 - Les sons viennent de la banque General MIDI **FluidR3_GM** (Frank Wen, licence MIT), dans la version « une note par fichier » de Benjamin Gleitzman : [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) (licence MIT). Pour regénérer les MP3 : récupérer les dossiers `FluidR3_GM/choir_aahs-mp3`, `violin-mp3`, `viola-mp3` et `cello-mp3` de ce dépôt, puis `python3 outils/audio.py CHEMIN/VERS/FluidR3_GM`.
 - Les symboles musicaux (clés, altérations) viennent des polices GNU FreeFont (FreeSerif) et DejaVu Sans, comme dans le Cours de contrepoint. La clé d'ut est dessinée à la main.
-- Tous les exemples ont été écrits pour ce cours, sauf trois extraits regravés d'après les fichiers MusicXML du [corpus music21](https://github.com/cuthbertLab/music21) (licence BSD, œuvres du domaine public) : le choral BWV 269 de J.-S. Bach (chapitre 14) et le début de l'Adagio du quatuor op. 18 n° 1 de Beethoven (chapitre 27). Les extraits des parties suivantes (Schumann, Fauré, Debussy, Ravel) seront regravés de la même façon.
+- Tous les exemples ont été écrits pour ce cours, sauf trois extraits regravés d'après les fichiers MusicXML du [corpus music21](https://github.com/cuthbertLab/music21) (licence BSD, œuvres du domaine public) : le choral BWV 269 de J.-S. Bach (chapitre 14) le début de l'Adagio du quatuor op. 18 n° 1 de Beethoven (chapitre 27) et l'Intermezzo du quatuor op. 41 n° 1 de Schumann (chapitre 33). Les parties 8 et 9 n'utilisent que des exemples originaux (ou un seul accord, comme celui de *Petrouchka*), faute de fichiers sources fiables pour Fauré, Debussy et Ravel, et parce que les œuvres de Stravinsky, Prokofiev, Messiaen et Dutilleux sont encore protégées.
 
 ## Licence
 

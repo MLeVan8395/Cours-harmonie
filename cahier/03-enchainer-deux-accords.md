@@ -122,7 +122,7 @@ Chant donné : choisis les accords, écris la basse, puis l'alto et le ténor.
 
 🔊 [Écouter](audio/c03-08-c.mp3) · [MIDI](audio/c03-08-c.mid)
 
-**Exercice 3.9** : Accord 5 · tierce absente ; Accord 8 · fondamentale non doublée à l'état fondamental ; Accords 2-3 · 8ve directe soprano/basse (soprano par saut).
+**Exercice 3.9** : Accord 5 · tierce absente ; Accord 7 · écart ténor-basse supérieur à la douzième ; Accords 2-3 · 8ve directe soprano/basse (soprano par saut).
 
 ![Corrigé 3.9](images/c03-09-c.png)
 

@@ -1,4 +1,4 @@
-[← 41. Exercices](41-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 41. Exercices](41-exercices.md) · [Sommaire](../README.md#sommaire) · [43. Fauré →](43-faure-couleurs-modales.md)
 
 ## 42. Corrigés
 
@@ -53,4 +53,4 @@ L'Adagietto commence et finit en **Fa majeur**. La partie centrale s'éloigne ve
 
 ---
 
-[← 41. Exercices](41-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 41. Exercices](41-exercices.md) · [Sommaire](../README.md#sommaire) · [43. Fauré →](43-faure-couleurs-modales.md)

@@ -1,4 +1,4 @@
-[← Wagner : cadences évitées et glissements](38-wagner.md) · [Sommaire du cahier](README.md)
+[← Wagner : cadences évitées et glissements](38-wagner.md) · [Sommaire du cahier](README.md) · [Fauré : modes et glissements →](43-faure.md)
 
 ## Franck et Mahler : majeur et mineur
 
@@ -34,4 +34,4 @@ Basse chiffrée : trouve les accords, écris le soprano, puis l'alto et le téno
 
 ---
 
-[← Wagner : cadences évitées et glissements](38-wagner.md) · [Sommaire du cahier](README.md)
+[← Wagner : cadences évitées et glissements](38-wagner.md) · [Sommaire du cahier](README.md) · [Fauré : modes et glissements →](43-faure.md)

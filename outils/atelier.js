@@ -433,6 +433,36 @@ const Atelier = (() => {
     });
     return {errs, conseils};
   }
+  // ------------------------------------------------------------------ écriture libre (harmonie moderne)
+  // chaque accord doit contenir les notes demandées (ex.cibles, et au moins ex.requis) ; pas de règles d'enchaînement,
+  // sauf, si ex.parallele, la même disposition que l'accord précédent (accords parallèles).
+  function fautesLibre(E) {
+    const ex = E.ex, errs = [], conseils = [];
+    const pcx = x => pcN(N(x + '4')), nomx = x => txtN(N(x + '4'));
+    E.notes.forEach((ch, i) => {
+      const cib = ex.cibles[i], pcs = cib.map(pcx);
+      ch.forEach((x, v) => {
+        if (!x) return;
+        const n = N(x), [lo, hi] = HV.TESS[HV.VOIX[v]].map(N);
+        if (midi(n) < midi(lo) || midi(n) > midi(hi)) errs.push({i, msg: `accord ${i + 1} : ${HV.VOIX[v]} hors tessiture (${HV.nom(n)})`});
+        if (ex.voix.includes(v) && !pcs.includes(HV.pc(n))) errs.push({i, msg: `accord ${i + 1} : ${HV.nom(n)} n'appartient pas ${ex.quoi || "à l'accord"} (${cib.map(nomx).join('-')})`});
+      });
+      for (let v = 0; v < 3; v++) if (ch[v] && ch[v + 1] && midi(N(ch[v])) < midi(N(ch[v + 1]))) errs.push({i, msg: `accord ${i + 1} : croisement ${HV.VOIX[v]}/${HV.VOIX[v + 1]}`});
+      if (ch.every(Boolean)) {
+        const have = new Set(ch.map(x => HV.pc(N(x))));
+        const manque = (ex.requis ? ex.requis[i] : cib).filter(x => !have.has(pcx(x)));
+        if (manque.length) errs.push({i, msg: `accord ${i + 1} : il manque ${manque.map(nomx).join(', ')}`});
+      }
+    });
+    if (ex.parallele) for (let i = 1; i < E.notes.length; i++) {
+      const a = E.notes[i - 1], b = E.notes[i];
+      if (!a.every(Boolean) || !b.every(Boolean)) continue;
+      const h = ex.parallele === 'diato' ? (x => dpos(N(x))) : (x => midi(N(x)));
+      const fa = a.map(x => h(x) - h(a[3])), fb = b.map(x => h(x) - h(b[3]));
+      if (fa.join() !== fb.join()) errs.push({i: i - 0.5, msg: `accords ${i}-${i + 1} : les voix ne bougent pas en parallèle (garde la même disposition, ${ex.parallele === 'diato' ? 'avec les mêmes intervalles comptés en degrés de la gamme' : 'avec exactement les mêmes intervalles'})`});
+    }
+    return {errs, conseils};
+  }
   // ------------------------------------------------------------------ choral : notes étrangères
   const NOMROLE = {p: 'note de passage', b: 'broderie', r: 'retard', app: 'appoggiature', e: 'échappée', ant: 'anticipation'};
   function itemsVoix(E, v) {
@@ -543,7 +573,7 @@ const Atelier = (() => {
   function analyser(E) {
     const et = etapeCourante(E);
     E.roles = null;
-    const r = et && et.type === 'degres' ? fautesDegres(E) : (E.ex.rythme ? fautesChoral(E) : fautesNotes(E));
+    const r = E.ex.libre ? fautesLibre(E) : et && et.type === 'degres' ? fautesDegres(E) : (E.ex.rythme ? fautesChoral(E) : fautesNotes(E));
     if (E.ex.isoles) { r.errs = r.errs.filter(e => Number.isInteger(e.i)); r.conseils = r.conseils.filter(e => Number.isInteger(e.i)); }
     const mauvais = new Set(), liens = new Set();
     r.errs.forEach(e => { if (e.i === null || e.i === undefined) return; if (Number.isInteger(e.i)) mauvais.add(e.i); else { liens.add(e.i - 0.5); liens.add(e.i + 0.5); } });
