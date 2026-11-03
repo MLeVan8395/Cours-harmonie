@@ -9,7 +9,7 @@ const Atelier = (() => {
   const SHARP_ORDER = [3, 0, 4, 1, 5, 2, 6], FLAT_ORDER = [6, 2, 5, 1, 4, 0, 3];
   const SHARP_POS = [38, 35, 39, 36, 33, 37, 34], FLAT_POS = [34, 37, 33, 36, 32, 35, 31];
   const CLEF_SHIFT = {treble: 0, bass: -14};
-  const MAJ = {Do: 0, Sol: 1, 'Ré': 2, La: 3, Mi: 4, Fa: -1};
+  const MAJ = {Do: 0, Sol: 1, 'Ré': 2, La: 3, Mi: 4, Si: 5, Fa: -1, Sib: -2, Mib: -3, Lab: -4};
   const LETTRE = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
   const mod = (a, b) => ((a % b) + b) % b;
   const N = HV.N, dpos = HV.dpos, midi = HV.midi;
@@ -385,7 +385,7 @@ const Atelier = (() => {
       const L = E.degres.map(d => d === null || d === undefined ? null : ex.menu[d][0]);
       const fin = ex.finLabel || 'I';
       if (L[n - 1] !== null && L[n - 1] !== fin) errs.push({i: n - 1, msg: `accord ${n} : cette phrase se termine sur ${fin}`});
-      if (fin === 'I' && L[n - 1] === 'I' && L[n - 2] !== null && !/^V(7|9)?$/.test(L[n - 2])) errs.push({i: n - 2, msg: `accord ${n - 1} : pour une cadence parfaite, il faut V (ou V7) avant le I final`});
+      if (fin === 'I' && L[n - 1] === 'I' && L[n - 2] !== null && !/^(V(7|9)?|IVm?)$/.test(L[n - 2])) errs.push({i: n - 2, msg: `accord ${n - 1} : pour finir, il faut V (ou V7) avant le I final, ou IV pour une cadence plagale`});
     } else if (ex.chant) {
       const D = E.degres;
       const fin = ex.fin === undefined ? 0 : ex.fin;

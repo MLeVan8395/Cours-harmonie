@@ -217,6 +217,9 @@ def base(tok):
         return 'N'
     if tok in ('It6', 'Fr6', 'Al6'):
         return tok
+    me = re.match(r'^(IVm|VIb|IIIb|VIIb|IIø|Vaug|V7aug)(64|6|65|43|2|7)?$', tok)
+    if me:
+        return 'IIø7' if me.group(1) == 'IIø' else me.group(1)
     m = RX.match(tok)
     deg, dim, chif, cible = m.group(1), m.group(2), m.group(3) or '5', m.group(4)
     b = deg + ('o' if dim else '') + ('7' if chif in ('7', '65', '43', '2') else '9' if chif == '9' else '')
@@ -224,7 +227,7 @@ def base(tok):
 
 
 def joli(tok):
-    return {'It6': 'It+6', 'Fr6': 'Fr+6', 'Al6': 'Al+6'}.get(tok, tok.replace('o7', '°7'))
+    return {'It6': 'It+6', 'Fr6': 'Fr+6', 'Al6': 'Al+6', 'VIb': 'VI♭', 'IIIb': 'III♭', 'VIIb': 'VII♭', 'Vaug': 'V+', 'V7aug': 'V7+'}.get(tok, tok.replace('o7', '°7'))
 
 
 GUIDE4 = {

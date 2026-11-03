@@ -1,4 +1,4 @@
-[← 28. Exercices](28-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 28. Exercices](28-exercices.md) · [Sommaire](../README.md#sommaire) · [30. L'emprunt au mode mineur →](30-l-emprunt-au-mode-mineur.md)
 
 ## 29. Corrigés
 
@@ -31,7 +31,7 @@ Accords : I - IV - N6 - V7 - I - VI - II6 - V7 - I. Dans le N6, la quinte (Fa) e
 
 🔊 [Écouter](audio/h29-c3.mp3) · [MIDI](audio/h29-c3.mid)
 
-Accords : I - VI - It+6 - V - I - IV - Al+6 - I6/4 - V7 - I. Dans les deux sixtes augmentées, Si♭ (basse) descend sur La et Sol♯ (soprano) monte sur La. La sixte allemande passe par le I6/4 : le Fa reste en place, ce qui évite les quintes Si♭-Fa, La-Mi.
+Accords : I - VI - It+6 - V - I - IV - Al+6 - I6/4 - V7 - I. Dans les deux sixtes augmentées, Si♭ (basse) descend sur La et Sol♯ (ténor) monte sur La. La sixte allemande passe par le I6/4 : le Fa reste en place, ce qui évite les quintes Si♭-Fa, La-Mi.
 
 ### Exercice 4 : une pédale de tonique
 
@@ -59,4 +59,4 @@ Chaque voix du choral passe à un instrument : soprano au 1er violon, alto au 2e
 
 ---
 
-[← 28. Exercices](28-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 28. Exercices](28-exercices.md) · [Sommaire](../README.md#sommaire) · [30. L'emprunt au mode mineur →](30-l-emprunt-au-mode-mineur.md)

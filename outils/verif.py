@@ -124,6 +124,8 @@ def info4(ch):
         q = 'ø'
     elif t3 == 3 and t7 == 9 and t5 in (6, None):
         q = 'o7'
+    elif t3 == 4 and t7 == 10 and t5 == 8:
+        q = 'dom+'
     else:
         q = '?'
     b = N(ch[3])['s']
@@ -141,7 +143,7 @@ def famille_dominante(A, sens):
     """Accords « de dominante » : leur 7e n'a pas besoin d'être préparée ; renvoie le pc de leur sensible, ou None."""
     if A is None:
         return None
-    if A['q'] == 'dom':
+    if A['q'] in ('dom', 'dom+'):
         return (A['pr'] + 4) % 12
     if A['q'] == 'o7' or (A['q'] == 'ø' and A['pr'] == sens):
         return A['pr']
@@ -211,7 +213,7 @@ def check(chords, tonic='Do', allow_third=(), libres=(), pedales=(), **_):
                     errs.append(f'{m} : basse non doublée dans un accord de quarte et sixte')
                 if r not in steps:
                     errs.append(f'{m} : accord de quarte et sixte incomplet')
-            if q == 'A':
+            if q == 'A' and racine(chords[i]) != (pc(N(tons[i] + '4')) + 7) % 12:
                 errs.append(f'{m} : accord augmenté')
         elif A is not None:
             if A['q'] == '?':
@@ -307,6 +309,21 @@ def check(chords, tonic='Do', allow_third=(), libres=(), pedales=(), **_):
             for v in range(4):
                 if b[v]['s'] == B['s'] and midi(a[v]) != midi(b[v]):
                     errs.append(f'{m} : septième ({VOIX[v]}) non préparée')
+        # quinte augmentée (dominante altérée) : elle monte d'un demi-ton
+        qa = quinte_aug(VUE[i])
+        if qa is not None and not meme_r(ra, rb):
+            for v in range(4):
+                if pc(a[v]) == qa and midi(b[v]) != midi(a[v]) + 1:
+                    errs.append(f'{m} : quinte augmentée ({VOIX[v]}) non résolue (elle monte d\'un demi-ton)')
+        # fausse relation : une note altérée chromatiquement doit l'être dans une voix qui la chantait
+        vus = set()
+        for u in range(4):
+            for v in range(4):
+                if u != v and b[v]['s'] == a[u]['s'] and b[v]['a'] != a[u]['a'] and (a[u]['s'], a[u]['a'], b[v]['a']) not in vus \
+                        and not any(a[w]['s'] == b[v]['s'] and a[w]['a'] == b[v]['a'] for w in range(4)) \
+                        and not any(a[w]['s'] == a[u]['s'] and a[w]['a'] == a[u]['a'] and b[w]['s'] == b[v]['s'] and b[w]['a'] == b[v]['a'] for w in range(4)):
+                    vus.add((a[u]['s'], a[u]['a'], b[v]['a']))
+                    errs.append(f'{m} : fausse relation {VOIX[u]}/{VOIX[v]} ({name(a[u])}-{name(b[v])})')
         # mélodie : intervalles augmentés, septièmes, sauts de plus d'une octave
         for v in range(4):
             d, st = dpos(b[v]) - dpos(a[v]), midi(b[v]) - midi(a[v])
@@ -322,6 +339,17 @@ def check(chords, tonic='Do', allow_third=(), libres=(), pedales=(), **_):
             if v < 3 and ad > 4 and not (ad == 7 and ast == 12) and not (ad == 5 and st > 0):
                 errs.append(f'{m} : saut trop grand ({VOIX[v]})')
     return errs
+
+
+def quinte_aug(ch):
+    """pc de la quinte augmentée d'une dominante altérée (V+ ou V7+), ou None."""
+    tr = triad(ch)
+    if tr is not None and qualite(ch) == 'A':
+        return next(pc(N(x)) for x in ch[:4] if N(x)['s'] == tr[2])
+    A = info4(ch)
+    if A is not None and A['q'] == 'dom+':
+        return (A['pr'] + 8) % 12
+    return None
 
 
 def meme_r(ra, rb):

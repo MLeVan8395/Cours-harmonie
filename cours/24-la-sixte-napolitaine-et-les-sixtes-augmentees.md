@@ -68,7 +68,7 @@ La solution (à droite) : passer par le **I6/4 de cadence**. Le Do reste en plac
 
 🔊 [Écouter](audio/h24-phrase.mp3) · [MIDI](audio/h24-phrase.mid)
 
-La sixte italienne (Si♭-Ré-Sol♯) arrive après le VI, avec le même Si♭ à la basse, puis se résout sur le V7 : Si♭ descend sur La, Sol♯ monte sur La.
+La sixte italienne (Si♭-Ré-Sol♯) arrive après le VI, avec le même Si♭ à la basse, puis se résout sur le V : Si♭ descend sur La, Sol♯ monte sur La. On évite ici le V7 : son Sol naturel, dans une autre voix juste après le Sol♯, ferait une **fausse relation** (voir le chapitre 30).
 
 ### Les règles à retenir
 

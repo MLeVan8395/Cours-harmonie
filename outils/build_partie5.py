@@ -121,7 +121,7 @@ save(satb(qm + six[2][0], unit=18, colors={(v, i): RED for v in vq for i in (0, 
           labels=labs(qm + six[2][0], ['Al+6', 'V'] + six[2][1], ['6+/5', '♯'] + six[2][2]), rows=DEG), 'h24-quintes')
 QM = eq
 
-ph24, d24, c24, s24, _ = realise('I IV6 V I VI It6 V7 I', 'Ré', -1, durees=[2, 2, 2, 2, 2, 2, 2, 2])
+ph24, d24, c24, s24, _ = realise('I IV6 V I VI It6 V I', 'Ré', -1, durees=[2, 2, 2, 2, 2, 2, 2, 2])
 save(satb(ph24, key=-1, unit=22, time=(4, 4), colors=couleurs(s24, ph24), labels=labs(ph24, d24, c24), rows=DEG), 'h24-phrase')
 
 # ======================================================================== chapitre 25 : pédales et cadences classiques

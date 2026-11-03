@@ -79,6 +79,7 @@ const HV = (() => {
     else if (t3 === 3 && t7 === 10 && (t5 === 7 || t5 === null)) q = 'm7';
     else if (t3 === 3 && t7 === 10 && t5 === 6) q = 'ø';
     else if (t3 === 3 && t7 === 9 && (t5 === 6 || t5 === null)) q = 'o7';
+    else if (t3 === 4 && t7 === 10 && t5 === 8) q = 'dom+';
     const b = N(ch[3]).s;
     let e = b === r ? '7' : b === t ? '65' : b === f ? '43' : b === s ? '2' : '9b';
     if (nn !== null && b === r) e = '9';
@@ -87,7 +88,7 @@ const HV = (() => {
   const sensibleDe = tonic => mod(pc(N(tonic + '4')) + 11, 12);
   function familleDominante(A, sens) {
     if (!A) return null;
-    if (A.q === 'dom') return (A.pr + 4) % 12;
+    if (A.q === 'dom' || A.q === 'dom+') return (A.pr + 4) % 12;
     if (A.q === 'o7' || (A.q === 'ø' && A.pr === sens)) return A.pr;
     return null;
   }
@@ -124,6 +125,29 @@ const HV = (() => {
       if (!a[v] || !b[v]) continue;
       if (pc(a[v]) === X.b6 && midi(b[v]) !== midi(a[v]) - 1) add(i + 0.5, `${m} : sixte augmentée (${VOIX[v]}) non résolue (cette note descend d'un demi-ton)`);
       if (pc(a[v]) === X.s4 && midi(b[v]) !== midi(a[v]) + 1) add(i + 0.5, `${m} : sixte augmentée (${VOIX[v]}) non résolue (cette note monte d'un demi-ton)`);
+    }
+  }
+  function quinteAug(ch) {
+    const tr = triad(ch);
+    if (tr && qualite(ch) === 'A') return pc(ch.map(N).find(n => n.s === tr[2]));
+    const A = info4(ch);
+    return A && A.q === 'dom+' ? (A.pr + 8) % 12 : null;
+  }
+  // quinte augmentée qui monte, fausse relation (a, b : notes N, éventuellement incomplètes)
+  function regles8(a, b, qa, meme, m, add, i) {
+    if (qa !== null && !meme)
+      for (let v = 0; v < 4; v++) if (a[v] && b[v] && pc(a[v]) === qa && midi(b[v]) !== midi(a[v]) + 1) add(i + 0.5, `${m} : quinte augmentée (${VOIX[v]}) non résolue (elle monte d'un demi-ton)`);
+    const vus = new Set();
+    for (let u = 0; u < 4; u++) for (let v = 0; v < 4; v++) {
+      if (u === v || !a[u] || !b[v]) continue;
+      const cle = a[u].s + ',' + a[u].a + ',' + b[v].a;
+      if (b[v].s !== a[u].s || b[v].a === a[u].a || vus.has(cle)) continue;
+      if (a.some(w => w && w.s === b[v].s && w.a === b[v].a)) continue;
+      const porteurs = [0, 1, 2, 3].filter(w => a[w] && a[w].s === a[u].s && a[w].a === a[u].a);
+      if (porteurs.some(w => !b[w])) continue;     // pas encore écrit
+      if (porteurs.some(w => b[w].s === b[v].s && b[w].a === b[v].a)) continue;
+      vus.add(cle);
+      add(i + 0.5, `${m} : fausse relation ${VOIX[u]}/${VOIX[v]} (${nom(a[u])}-${nom(b[v])})`);
     }
   }
   // règles d'un accord de 4 sons complet
@@ -188,7 +212,7 @@ const HV = (() => {
           if (cnt(f) < 2) add(i, `${m} : basse non doublée dans un accord de quarte et sixte`);
           if (!steps.includes(r)) add(i, `${m} : accord de quarte et sixte incomplet`);
         }
-        if (q === 'A') add(i, `${m} : accord augmenté`);
+        if (q === 'A' && racine(chords[i]) !== (pc(N(TONS[i] + '4')) + 7) % 12) add(i, `${m} : accord augmenté`);
       }
       if (ch.filter(n => pc(n) === sens).length > 1) add(i, `${m} : sensible doublée`);
     });
@@ -218,6 +242,7 @@ const HV = (() => {
       for (const v of [0, 3])
         if (pc(a[v]) === sens && pc(b[v]) !== (sens + 1) % 12 && pc(b[v]) !== sens && !meme && !libres.has(i)) add(i + 0.5, `${m} : sensible (${VOIX[v]}) non résolue sur la tonique`);
       regles7(a, b, INFO[i], INFO[i + 1], sens, SENS[i + 1], meme, m, add, i);
+      regles8(a, b, quinteAug(VUE[i]), meme, m, add, i);
       for (let v = 0; v < 4; v++) {
         const d = dpos(b[v]) - dpos(a[v]), st = midi(b[v]) - midi(a[v]), ad = Math.abs(d), ast = Math.abs(st);
         if (ad === 1 && ast === 3) add(i + 0.5, `${m} : seconde augmentée (${VOIX[v]})`);
@@ -290,6 +315,7 @@ const HV = (() => {
       for (const v of [0, 3])
         if (ok(v) && pc(a[v]) === sens && pc(b[v]) !== (sens + 1) % 12 && pc(b[v]) !== sens && !meme && !libres.has(i)) add(i + 0.5, `${m} : sensible (${VOIX[v]}) non résolue sur la tonique`);
       regles7(a, b, ca ? info4(va) : null, cb ? info4(vb) : null, sens, SENS[i + 1], meme, m, add, i);
+      regles8(a, b, ca ? quinteAug(va) : null, meme, m, add, i);
       for (let v = 0; v < 4; v++) {
         if (!ok(v)) continue;
         const d = dpos(b[v]) - dpos(a[v]), st = midi(b[v]) - midi(a[v]), ad = Math.abs(d), ast = Math.abs(st);

@@ -6,7 +6,7 @@ FR = {'C': 'Do', 'D': 'Ré', 'E': 'Mi', 'F': 'Fa', 'G': 'Sol', 'A': 'La', 'B': '
 
 def lire(f):
     z = zipfile.ZipFile(f)
-    nom = [n for n in z.namelist() if n.endswith('.xml') and 'META' not in n][0]
+    nom = [n for n in z.namelist() if (n.endswith('.xml') or n.endswith('.musicxml')) and 'META' not in n and 'container' not in n][0]
     root = ET.fromstring(z.read(nom))
     parts = []
     for p in root.findall('part'):

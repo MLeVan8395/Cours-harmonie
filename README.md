@@ -13,7 +13,7 @@ Auteur : Mickael Le Van, professeur de musiques actuelles et jazz.
 Une appli web installable sur téléphone, tablette ou ordinateur, qui marche ensuite **hors connexion**. Elle réunit :
 
 - **Cours** : tous les chapitres, avec un lecteur sous chaque exemple (sons de banque General MIDI : chœur, piano, orgue, quatuor à cordes) ;
-- **Cahier d'exercices** : les 96 exercices, à faire directement sur la portée, corrigés au fur et à mesure ; la progression est enregistrée ;
+- **Cahier d'exercices** : les 107 exercices, à faire directement sur la portée, corrigés au fur et à mesure ; la progression est enregistrée ;
 - **Chiffrer** : trouver le degré et l'état (5, 6, 6/4) d'un accord, dans toutes les tonalités du cours (160 accords) ;
 - **Chasse aux fautes** : deux accords, une faute à trouver (quintes, octaves, croisement, doublure, sensible…), ou aucune (150 enchaînements) ;
 - **Cadences à l'oreille** : écouter une phrase et reconnaître la cadence (parfaite, imparfaite, demi, plagale, rompue) ;
@@ -37,7 +37,7 @@ Pour la mettre en ligne : dans les réglages du dépôt, **Settings → Pages**,
 | [`cours/images/`](cours/images/) | Les exemples et exercices gravés (PNG) |
 | [`cours/audio/`](cours/audio/) | Chaque exemple en MP3 et en MIDI |
 | [`index.html`](index.html) | La version web du cours, avec un lecteur sous chaque exemple |
-| [`cahier/`](cahier/README.md) | Le **cahier d'exercices** : 96 exercices qui suivent le cours, avec leurs corrigés |
+| [`cahier/`](cahier/README.md) | Le **cahier d'exercices** : 107 exercices qui suivent le cours, avec leurs corrigés |
 | [`cahier.html`](cahier.html) | La version web du cahier : tous les exercices à faire sur la portée |
 | [`app/`](app/) | L'application **Atelier d'harmonie** (PWA installable, hors connexion) |
 | [`outils/`](outils/) | Le graveur, le vérificateur de règles et les outils audio |
@@ -90,14 +90,14 @@ Les chapitres marqués ✅ sont rédigés. Les autres sont prévus : le plan peu
 - [28. Exercices](cours/28-exercices.md)
 - [29. Corrigés](cours/29-corriges.md)
 
-### Sixième partie : le premier romantisme (Schumann, Chopin, Brahms)
+### Sixième partie : le premier romantisme (Schumann, Chopin, Brahms) ✅
 
-- 30\. L'emprunt au mode mineur et les modulations par tierces
-- 31\. Le chromatisme : notes de passage chromatiques, accords altérés
-- 32\. De l'écriture pianistique aux quatre voix (Schumann, Chopin)
-- 33\. Analyse : une pièce de l'*Album pour la jeunesse* de Schumann, un choral de Brahms
-- 34\. Exercices
-- 35\. Corrigés
+- [30. L'emprunt au mode mineur et les modulations par tierces](cours/30-l-emprunt-au-mode-mineur.md) : IVm, VI♭, IIø7, la fausse relation, de Do à La♭ et à Mi
+- [31. Le chromatisme](cours/31-le-chromatisme.md) : notes de passage chromatiques, chaîne de dominantes, quinte augmentée
+- [32. Du piano aux quatre voix](cours/32-du-piano-aux-quatre-voix.md) : arpèges, valse, réduire une pièce de piano
+- [33. Analyse : Schumann, quatuor op. 41 n° 1, Intermezzo](cours/33-analyse-schumann-op41-n1.md) : pédale et lignes chromatiques
+- [34. Exercices](cours/34-exercices.md)
+- [35. Corrigés](cours/35-corriges.md)
 
 ### Septième partie : le romantisme tardif (Liszt, Wagner, Franck, Mahler)
 
@@ -118,9 +118,9 @@ Les chapitres marqués ✅ sont rédigés. Les autres sont prévus : le plan peu
 - 47\. Exercices
 - 48\. Corrigés
 
-### Prolongement possible : le XXe siècle (Scriabine, Stravinsky, Prokofiev, Messiaen, Dutilleux)
+### Prolongement possible : le XXe siècle (Scriabine, Bartók, Stravinsky, Prokofiev, Messiaen, Dutilleux)
 
-Accord mystique et harmonie en quartes, bitonalité et échelle octatonique, modes à transposition limitée, accords pivots. Pour les compositeurs dont les œuvres sont encore protégées, les exemples seront originaux, avec des références précises pour l'écoute.
+Accord mystique et harmonie en quartes, l'écriture des quatuors de Bartók (système des axes, échelles acoustique et octatonique, symétries, clusters), bitonalité, modes à transposition limitée, accords pivots. Pour les compositeurs dont les œuvres sont encore protégées, les exemples seront originaux, avec des références précises pour l'écoute.
 
 **Le quatuor à cordes, fil rouge** : chaque partie se termine par un exercice de transcription ou d'écriture pour quatuor (violon 1, violon 2, alto, violoncelle). À partir de la cinquième partie, le quatuor devient le format principal.
 
@@ -135,7 +135,7 @@ Pour mettre la version web en ligne gratuitement : dans les réglages du dépôt
 
 ## Le cahier d'exercices
 
-À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15), accords de quatre sons (18-21), style classique (24-26). Il compte **96 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés, 10 exercices sur le choral (orner une phrase, harmoniser une mélodie) 26 exercices sur les accords de 7e, la 9e, les dominantes secondaires et la modulation, et 16 sur la sixte napolitaine, les sixtes augmentées, les pédales et l'écriture pour quatuor, en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
+À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15), accords de quatre sons (18-21), style classique (24-26), premier romantisme (30-32). Il compte **107 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés, 10 exercices sur le choral (orner une phrase, harmoniser une mélodie) 26 exercices sur les accords de 7e, la 9e, les dominantes secondaires et la modulation, 16 sur la sixte napolitaine, les sixtes augmentées, les pédales et l'écriture pour quatuor, et 11 sur les emprunts, le chromatisme et l'écriture pianistique, en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
 
 Les exercices sont fabriqués par `outils/build_cahier.py` : pour chaque phrase (degrés, états, basse ou mélodie), le générateur (`outils/generateur.py`) calcule une réalisation sans faute, contrôlée par le vérificateur. Pour ajouter un exercice, il suffit d'une ligne dans le catalogue de ce fichier.
 
@@ -179,7 +179,7 @@ Tous les exemples du cours sont produits par de petits programmes Python :
 - Les règles suivent la tradition des traités d'harmonie français (Théodore Dubois, *Traité d'harmonie théorique et pratique*, 1921) et la pratique du choral de J.-S. Bach.
 - Les sons viennent de la banque General MIDI **FluidR3_GM** (Frank Wen, licence MIT), dans la version « une note par fichier » de Benjamin Gleitzman : [midi-js-soundfonts](https://github.com/gleitz/midi-js-soundfonts) (licence MIT). Pour regénérer les MP3 : récupérer les dossiers `FluidR3_GM/choir_aahs-mp3`, `violin-mp3`, `viola-mp3` et `cello-mp3` de ce dépôt, puis `python3 outils/audio.py CHEMIN/VERS/FluidR3_GM`.
 - Les symboles musicaux (clés, altérations) viennent des polices GNU FreeFont (FreeSerif) et DejaVu Sans, comme dans le Cours de contrepoint. La clé d'ut est dessinée à la main.
-- Tous les exemples ont été écrits pour ce cours, sauf deux extraits regravés d'après les fichiers MusicXML du [corpus music21](https://github.com/cuthbertLab/music21) (licence BSD, œuvres du domaine public) : le choral BWV 269 de J.-S. Bach (chapitre 14) et le début de l'Adagio du quatuor op. 18 n° 1 de Beethoven (chapitre 27). Les extraits des parties suivantes (Schumann, Fauré, Debussy, Ravel) seront regravés de la même façon.
+- Tous les exemples ont été écrits pour ce cours, sauf trois extraits regravés d'après les fichiers MusicXML du [corpus music21](https://github.com/cuthbertLab/music21) (licence BSD, œuvres du domaine public) : le choral BWV 269 de J.-S. Bach (chapitre 14) et le début de l'Adagio du quatuor op. 18 n° 1 de Beethoven (chapitre 27). Les extraits des parties suivantes (Schumann, Fauré, Debussy, Ravel) seront regravés de la même façon.
 
 ## Licence
 

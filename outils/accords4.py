@@ -13,6 +13,9 @@ Symboles d'une phrase (séparés par des espaces) :
     N6                  sixte napolitaine (accord majeur sur le 2e degré abaissé, 1er renversement)
     It6 Fr6 Al6         sixtes augmentées italienne, française, allemande (6e degré abaissé à la basse)
     IV@Do  V7@Do        accord des trois voix du haut au-dessus d'une pédale (ici Do)
+    IVm VIb IIIb VIIb   accords empruntés au mode mineur (en majeur), avec 6 ou 64 pour les renversements
+    IIø7 IIø65          7e demi-diminuée du II empruntée au mineur (6e degré abaissé)
+    Vaug V7aug          dominante à quinte augmentée (la quinte haussée monte)
 
 phrase4('I II65 V7 I', 'Do', 0) -> (réalisations, tierces doublées permises, liste des accords)
 """
@@ -24,6 +27,7 @@ from recherche import notes_in_range, voicings, penal
 from generateur import note_degre, mode, chiffre, DEG
 
 TONS = {'Do': ('Do', 0), 'Sol': ('Sol', 1), 'Ré': ('Ré', 2), 'La': ('La', 3), 'Mi': ('Mi', 4), 'Fa': ('Fa', -1), 'Sib': ('Sib', -2),
+        'Si': ('Si', 5), 'Mib': ('Mib', -3), 'Lab': ('Lab', -4), 'Réb': ('Réb', -5), 'fa': ('Fa', -4),
         'la': ('La', 0), 'mi': ('Mi', 1), 'si': ('Si', 2), 'ré': ('Ré', -1), 'sol': ('Sol', -2), 'do': ('Do', -3), 'fa#': ('Fa#', 3)}
 DEGN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII']
 RX = re.compile(r'^(VII|VI|V|IV|III|II|I)(o)?(9|7|65|43|2|64|6)?(?:/(VII|VI|V|IV|III|II|I))?$')
@@ -60,7 +64,40 @@ def spec_chroma(tok, tonique, armure):
             'deg': None, 'q': 'aug6', 'basse': sp[0][0], 'complet': True}
 
 
+EMPRUNTS = {  # (degrés au-dessus de la tonique, demi-tons), étiquette
+    'IVm': (((3, 5), (5, 8), (0, 0)), 'IVm'), 'VIb': (((5, 8), (0, 0), (2, 3)), 'VI♭'), 'IIIb': (((2, 3), (4, 7), (6, 10)), 'III♭'),
+    'VIIb': (((6, 10), (1, 2), (3, 5)), 'VII♭'), 'IIø': (((1, 2), (3, 5), (5, 8), (0, 0)), 'IIø'),
+    'Vaug': (((4, 7), (6, 11), (1, 3)), 'V+'), 'V7aug': (((4, 7), (6, 11), (1, 3), (3, 5)), 'V+')}
+RXE = re.compile(r'^(IVm|VIb|IIIb|VIIb|IIø|Vaug|V7aug)(64|6|65|43|2|7)?$')
+
+
+def spec_emprunt(tok, tonique, armure):
+    m = RXE.match(tok)
+    b, e = m.group(1), m.group(2) or ('7' if b_is4(m.group(1)) else '5')
+    ts, tp = FR.index(tonique.rstrip('#b')), pc_nom(tonique)
+    (iv, lab) = EMPRUNTS[b]
+    names = [nom((ts + ds) % 7, (tp + dp) % 12) for ds, dp in iv]
+    if len(names) == 4:
+        q = qualite4(names) if b != 'V7aug' else 'dom+'
+        ch = {'7': '7', '65': '6/5', '43': '4/3', '2': '2'}[e] if b == 'IIø' else {'7': '7+', '65': '6/5', '43': '+6', '2': '+4'}[e]
+        if b == 'V7aug':
+            ch = {'7': '7+ 5♯', '65': '6/5', '43': '+6', '2': '+4'}[e]
+    else:
+        q = None
+        ch = {'5': '5', '6': '6', '64': '6/4'}[e]
+        if b == 'Vaug':
+            ch = '5♯'
+    return {'tok': tok, 'names': names, 'etat': e, 'label': lab, 'chiffre': ch, 'ton': (tonique, armure),
+            'deg': None, 'q': q, 'basse': names[BASSE[e]], 'complet': b in ('Vaug', 'V7aug') or e not in ('5', '7')}
+
+
+def b_is4(b):
+    return b in ('IIø', 'V7aug')
+
+
 def spec(tok, tonique, armure):
+    if RXE.match(tok):
+        return spec_emprunt(tok, tonique, armure)
     if '@' in tok:     # accord au-dessus d'une pédale
         acc, ped = tok.split('@')
         sp = spec(acc, tonique, armure)
@@ -158,6 +195,10 @@ def phrase4(plan, tonique='Do', armure=0, soprano_fin=True, n=1, sop_max='Fa5', 
     for i, s in enumerate(seq):   # VI relié à V : tierce doublée permise
         if s['deg'] == 5 and s['q'] is None and s['etat'] == '5' and any(
                 0 <= j < len(seq) and seq[j]['deg'] == 4 and seq[j]['label'] == 'V' for j in (i - 1, i + 1)):
+            allow.add(i)
+        if s['label'] == 'VI♭' and i > 0 and seq[i - 1]['label'] == 'V':
+            allow.add(i)
+        if i > 0 and seq[i - 1]['label'] == 'V+':
             allow.add(i)
     cands = []
     for i, s in enumerate(seq):

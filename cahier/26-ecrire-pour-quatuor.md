@@ -1,4 +1,4 @@
-[← Pédales et cadences classiques](25-pedales-et-cadences.md) · [Sommaire du cahier](README.md)
+[← Pédales et cadences classiques](25-pedales-et-cadences.md) · [Sommaire du cahier](README.md) · [L'emprunt au mineur et les modulations par tierces →](30-emprunts-et-modulations-par-tierces.md)
 
 ## Écrire pour quatuor à cordes
 
@@ -84,4 +84,4 @@ Pour quatuor à cordes (en batteries) :
 
 ---
 
-[← Pédales et cadences classiques](25-pedales-et-cadences.md) · [Sommaire du cahier](README.md)
+[← Pédales et cadences classiques](25-pedales-et-cadences.md) · [Sommaire du cahier](README.md) · [L'emprunt au mineur et les modulations par tierces →](30-emprunts-et-modulations-par-tierces.md)

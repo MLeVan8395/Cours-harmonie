@@ -9,7 +9,7 @@ from graveur import N, midi, dpos, FR
 from verif import check, TESS, VOIX
 from recherche import notes_in_range, voicings, penal
 
-MAJ = {'Do': 0, 'Sol': 1, 'Ré': 2, 'La': 3, 'Mi': 4, 'Fa': -1, 'Sib': -2}
+MAJ = {'Do': 0, 'Sol': 1, 'Ré': 2, 'La': 3, 'Mi': 4, 'Si': 5, 'Fa': -1, 'Sib': -2, 'Mib': -3, 'Lab': -4, 'Réb': -5}
 SHARP_ORDER = [3, 0, 4, 1, 5, 2, 6]
 FLAT_ORDER = [6, 2, 5, 1, 4, 0, 3]
 DEG = {'I': 0, 'II': 1, 'III': 2, 'IV': 3, 'V': 4, 'VI': 5, 'VII': 6}

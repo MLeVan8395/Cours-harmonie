@@ -83,7 +83,7 @@ for f in chapitres:
     html = re.sub(r'href="\.\./cours/(\d\d)-[^"]+\.md"', lambda m: f'href="index.html#ch-{m.group(1)}"', html)
     sections.append(f'<section id="{cid(f)}">{html}</section>')
 
-parties = [] if CAHIER else [('01', 'Les bases du 4 voix'), ('06', 'Renversements et cadences'), ('13', 'Le choral'), ('18', 'Les accords de quatre sons'), ('24', 'Le style classique')]
+parties = [] if CAHIER else [('01', 'Les bases du 4 voix'), ('06', 'Renversements et cadences'), ('13', 'Le choral'), ('18', 'Les accords de quatre sons'), ('24', 'Le style classique'), ('30', 'Le premier romantisme')]
 som = '<nav id="sommaire"><h2>Sommaire</h2>'
 for i, (c, t) in enumerate(sommaire):
     for p, nomp in parties:

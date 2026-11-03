@@ -21,5 +21,8 @@ Dans la version web (`cahier.html`), on fait les exercices **directement sur la 
 - [La sixte napolitaine et les sixtes augmentées](24-napolitaine-et-sixtes-augmentees.md) (chapitre 24 du cours) : 6 × basse chiffrée, 1 × chant donné
 - [Pédales et cadences classiques](25-pedales-et-cadences.md) (chapitre 25 du cours) : 2 × basse donnée, 2 × basse chiffrée, 1 × chant donné
 - [Écrire pour quatuor à cordes](26-ecrire-pour-quatuor.md) (chapitre 26 du cours) : 2 × basse chiffrée, 1 × basse donnée, 1 × chant donné
+- [L'emprunt au mineur et les modulations par tierces](30-emprunts-et-modulations-par-tierces.md) (chapitre 30 du cours) : 3 × basse chiffrée, 1 × basse donnée, 1 × chant donné
+- [Le chromatisme](31-le-chromatisme.md) (chapitre 31 du cours) : 2 × basse chiffrée, 1 × basse donnée
+- [Du piano aux quatre voix](32-du-piano-aux-quatre-voix.md) (chapitre 32 du cours) : 2 × basse chiffrée, 1 × chant donné
 
-**96 exercices** en tout, dont 22 basses données, 13 chants donnés, 10 exercices sur le choral, 26 sur les accords de quatre sons et 16 sur le style classique. Tous les corrigés sont contrôlés par le vérificateur du cours.
+**107 exercices** en tout, dont 22 basses données, 13 chants donnés, 10 exercices sur le choral, 26 sur les accords de quatre sons, 16 sur le style classique et 11 sur le premier romantisme. Tous les corrigés sont contrôlés par le vérificateur du cours.
