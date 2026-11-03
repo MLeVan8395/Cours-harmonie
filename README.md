@@ -1,5 +1,8 @@
 # Cours d'écriture et d'harmonie
 
+> 📱 **L'appli Atelier d'harmonie : [mlevan8395.github.io/Cours-harmonie/app](https://mlevan8395.github.io/Cours-harmonie/app/)**  
+> Cours, cahier d'exercices sur la portée, chiffrage, chasse aux fautes, cadences à l'oreille et quiz. Installable sur téléphone, fonctionne hors connexion.
+
 Un cours d'harmonie à quatre voix pour débutants, en français : du choral de Bach à l'harmonie de Fauré, Debussy et Ravel, en passant par Mozart, Beethoven et Schumann. On écrit pour le **quatuor vocal** (soprano, alto, ténor, basse) et pour le **quatuor à cordes**. Chaque chapitre contient des explications simples, des exemples gravés, des exercices et leurs corrigés.
 
 Ce cours fait suite au [Cours de contrepoint](https://github.com/MLeVan8395/Cours-contrepoint) : le contrepoint t'a appris à écrire des lignes indépendantes, l'harmonie t'apprend à les faire sonner ensemble, accord après accord.
