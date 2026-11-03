@@ -27,7 +27,7 @@ from recherche import notes_in_range, voicings, penal
 from generateur import note_degre, mode, chiffre, DEG
 
 TONS = {'Do': ('Do', 0), 'Sol': ('Sol', 1), 'Ré': ('Ré', 2), 'La': ('La', 3), 'Mi': ('Mi', 4), 'Fa': ('Fa', -1), 'Sib': ('Sib', -2),
-        'Si': ('Si', 5), 'Mib': ('Mib', -3), 'Lab': ('Lab', -4), 'Réb': ('Réb', -5), 'fa': ('Fa', -4),
+        'Si': ('Si', 5), 'Mib': ('Mib', -3), 'Lab': ('Lab', -4), 'Réb': ('Réb', -5), 'fa': ('Fa', -4), 'mib': ('Mib', -6), 'sol#': ('Sol#', 5), 'do#': ('Do#', 4),
         'la': ('La', 0), 'mi': ('Mi', 1), 'si': ('Si', 2), 'ré': ('Ré', -1), 'sol': ('Sol', -2), 'do': ('Do', -3), 'fa#': ('Fa#', 3)}
 DEGN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII']
 RX = re.compile(r'^(VII|VI|V|IV|III|II|I)(o)?(9|7|65|43|2|64|6)?(?:/(VII|VI|V|IV|III|II|I))?$')
@@ -170,9 +170,10 @@ def lire(plan, tonique, armure):
         marche = tok.endswith('*')
         if '=' in tok:   # accord pivot : « VI=[Sol]II »
             avant, apres = tok.rstrip('*').split('=')
+            lab_avant = spec(avant, t, a)['label']
             t, a = TONS[apres[1:apres.index(']')]]
             sp = spec(apres[apres.index(']') + 1:], t, a)
-            sp['label'] = avant + ' = ' + sp['label']
+            sp['label'] = lab_avant + ' = ' + sp['label']
             sp['pivot'] = True
         else:
             sp = spec(tok.rstrip('*'), t, a)

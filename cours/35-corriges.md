@@ -1,4 +1,4 @@
-[← 34. Exercices](34-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 34. Exercices](34-exercices.md) · [Sommaire](../README.md#sommaire) · [36. Enharmonie et modulations éloignées →](36-enharmonie-et-modulations-eloignees.md)
 
 ## 35. Corrigés
 
@@ -59,4 +59,4 @@ La mélodie (le soprano du choral) passe à la main droite, en blanches pointée
 
 ---
 
-[← 34. Exercices](34-exercices.md) · [Sommaire](../README.md#sommaire)
+[← 34. Exercices](34-exercices.md) · [Sommaire](../README.md#sommaire) · [36. Enharmonie et modulations éloignées →](36-enharmonie-et-modulations-eloignees.md)

@@ -16,7 +16,7 @@ Auteur : Mickael Le Van, professeur de musiques actuelles et jazz.
 Une appli web installable sur téléphone, tablette ou ordinateur, qui marche ensuite **hors connexion**. Elle réunit :
 
 - **Cours** : tous les chapitres, avec un lecteur sous chaque exemple (sons de banque General MIDI : chœur, piano, orgue, quatuor à cordes) ;
-- **Cahier d'exercices** : les 107 exercices, à faire directement sur la portée, corrigés au fur et à mesure ; la progression est enregistrée ;
+- **Cahier d'exercices** : les 116 exercices, à faire directement sur la portée, corrigés au fur et à mesure ; la progression est enregistrée ;
 - **Chiffrer** : trouver le degré et l'état (5, 6, 6/4) d'un accord, dans toutes les tonalités du cours (160 accords) ;
 - **Chasse aux fautes** : deux accords, une faute à trouver (quintes, octaves, croisement, doublure, sensible…), ou aucune (150 enchaînements) ;
 - **Cadences à l'oreille** : écouter une phrase et reconnaître la cadence (parfaite, imparfaite, demi, plagale, rompue) ;
@@ -40,7 +40,7 @@ Pour la mettre en ligne : dans les réglages du dépôt, **Settings → Pages**,
 | [`cours/images/`](cours/images/) | Les exemples et exercices gravés (PNG) |
 | [`cours/audio/`](cours/audio/) | Chaque exemple en MP3 et en MIDI |
 | [`index.html`](index.html) | La version web du cours, avec un lecteur sous chaque exemple |
-| [`cahier/`](cahier/README.md) | Le **cahier d'exercices** : 107 exercices qui suivent le cours, avec leurs corrigés |
+| [`cahier/`](cahier/README.md) | Le **cahier d'exercices** : 116 exercices qui suivent le cours, avec leurs corrigés |
 | [`cahier.html`](cahier.html) | La version web du cahier : tous les exercices à faire sur la portée |
 | [`app/`](app/) | L'application **Atelier d'harmonie** (PWA installable, hors connexion) |
 | [`outils/`](outils/) | Le graveur, le vérificateur de règles et les outils audio |
@@ -102,15 +102,15 @@ Les chapitres marqués ✅ sont rédigés. Les autres sont prévus : le plan peu
 - [34. Exercices](cours/34-exercices.md)
 - [35. Corrigés](cours/35-corriges.md)
 
-### Septième partie : le romantisme tardif (Liszt, Wagner, Franck, Mahler)
+### Septième partie : le romantisme tardif (Liszt, Wagner, Franck, Mahler) ✅
 
-- 36\. Enharmonie et modulations éloignées (la 7e diminuée et la sixte augmentée « pivots »)
-- 37\. L'accord augmenté et l'harmonie par tierces (Liszt)
-- 38\. Wagner : l'accord de Tristan, la résolution repoussée, le glissement chromatique
-- 39\. Franck et Mahler : chromatisme, mélange majeur/mineur, tonalité progressive
-- 40\. Analyse : le début du Prélude de *Tristan et Isolde* ; l'Adagietto de la 5e symphonie de Mahler
-- 41\. Exercices
-- 42\. Corrigés
+- [36. Enharmonie et modulations éloignées](cours/36-enharmonie-et-modulations-eloignees.md) : une 7e diminuée pour quatre tons, la sixte allemande qui devient V7
+- [37. L'accord augmenté et les tierces](cours/37-l-accord-augmente-et-les-tierces.md) : Liszt, le cycle des tierces majeures (jusqu'à *Giant Steps*)
+- [38. Wagner : l'accord de Tristan](cours/38-wagner-l-accord-de-tristan.md) : la résolution repoussée, la cadence évitée, le glissement chromatique
+- [39. Franck et Mahler](cours/39-franck-et-mahler.md) : la phrase qui monte d'un demi-ton, majeur et mineur, la tonalité progressive
+- [40. Analyse : le Prélude de *Tristan* et l'Adagietto de Mahler](cours/40-analyse-tristan-et-adagietto.md) : guide d'écoute
+- [41. Exercices](cours/41-exercices.md)
+- [42. Corrigés](cours/42-corriges.md)
 
 ### Huitième partie : vers l'harmonie moderne (Fauré, Debussy, Ravel)
 
@@ -138,7 +138,7 @@ Pour mettre la version web en ligne gratuitement : dans les réglages du dépôt
 
 ## Le cahier d'exercices
 
-À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15), accords de quatre sons (18-21), style classique (24-26), premier romantisme (30-32). Il compte **107 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés, 10 exercices sur le choral (orner une phrase, harmoniser une mélodie) 26 exercices sur les accords de 7e, la 9e, les dominantes secondaires et la modulation, 16 sur la sixte napolitaine, les sixtes augmentées, les pédales et l'écriture pour quatuor, et 11 sur les emprunts, le chromatisme et l'écriture pianistique, en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
+À côté du cours, le [cahier d'exercices](cahier/README.md) suit les chapitres un par un : accords séparés (chapitres 1-2), enchaînements (3), premier renversement (6), cadences (7), quarte et sixte (8), phrases plus longues (9), mode mineur (10), choral (13-15), accords de quatre sons (18-21), style classique (24-26), premier romantisme (30-32), romantisme tardif (36-39). Il compte **116 exercices**, dont 22 basses données (avec degrés ou chiffrées), 13 chants donnés, 10 exercices sur le choral (orner une phrase, harmoniser une mélodie) 26 exercices sur les accords de 7e, la 9e, les dominantes secondaires et la modulation, 16 sur la sixte napolitaine, les sixtes augmentées, les pédales et l'écriture pour quatuor, 11 sur les emprunts, le chromatisme et l'écriture pianistique, et 9 sur l'enharmonie, les modulations éloignées et le mélange majeur/mineur, en Do, Sol, Fa et Ré majeur, la, mi, ré et sol mineur. Chaque corrigé est gravé et s'écoute.
 
 Les exercices sont fabriqués par `outils/build_cahier.py` : pour chaque phrase (degrés, états, basse ou mélodie), le générateur (`outils/generateur.py`) calcule une réalisation sans faute, contrôlée par le vérificateur. Pour ajouter un exercice, il suffit d'une ligne dans le catalogue de ce fichier.
 

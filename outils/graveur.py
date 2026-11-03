@@ -362,6 +362,8 @@ class Figure:
                 o.append(f'<text x="{x0 + 2}" y="{max(sysBot + 34, ext[1] + 24) + r * 30}" font-family="{FONT}" font-size="10" fill="{MUTED}">{name}</text>')
         Ht = max(sysBot, ext[1] - 12) + (self.bottom if self.bottom is not None else (46 + 30 * max(0, maxrow)))
         shift = max(0, 40 - ext[0]) if self.top_texts else max(0, 12 - ext[0])
+        if titres_boites:
+            shift = max(shift, 20 - min(sysTop - 27, ext[0] - 12))
         if shift:
             o = [f'<g transform="translate(0 {shift})">'] + o + ['</g>']
             Ht += shift

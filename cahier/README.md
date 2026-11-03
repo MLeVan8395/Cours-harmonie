@@ -24,5 +24,9 @@ Dans la version web (`cahier.html`), on fait les exercices **directement sur la 
 - [L'emprunt au mineur et les modulations par tierces](30-emprunts-et-modulations-par-tierces.md) (chapitre 30 du cours) : 3 × basse chiffrée, 1 × basse donnée, 1 × chant donné
 - [Le chromatisme](31-le-chromatisme.md) (chapitre 31 du cours) : 2 × basse chiffrée, 1 × basse donnée
 - [Du piano aux quatre voix](32-du-piano-aux-quatre-voix.md) (chapitre 32 du cours) : 2 × basse chiffrée, 1 × chant donné
+- [Enharmonie et modulations éloignées](36-enharmonie.md) (chapitre 36 du cours) : 3 × basse donnée
+- [L'accord augmenté et les tierces](37-modulations-par-tierces.md) (chapitre 37 du cours) : 2 × basse donnée
+- [Wagner : cadences évitées et glissements](38-wagner.md) (chapitre 38 du cours) : 1 × basse chiffrée, 1 × basse donnée
+- [Franck et Mahler : majeur et mineur](39-majeur-et-mineur.md) (chapitre 39 du cours) : 1 × chant donné, 1 × basse chiffrée
 
-**107 exercices** en tout, dont 22 basses données, 13 chants donnés, 10 exercices sur le choral, 26 sur les accords de quatre sons, 16 sur le style classique et 11 sur le premier romantisme. Tous les corrigés sont contrôlés par le vérificateur du cours.
+**116 exercices** en tout, dont 22 basses données, 13 chants donnés, 10 exercices sur le choral, 26 sur les accords de quatre sons, 16 sur le style classique, 11 sur le premier romantisme et 9 sur le romantisme tardif. Tous les corrigés sont contrôlés par le vérificateur du cours.

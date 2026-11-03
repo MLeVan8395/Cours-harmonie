@@ -1,4 +1,4 @@
-[← Le chromatisme](31-le-chromatisme.md) · [Sommaire du cahier](README.md)
+[← Le chromatisme](31-le-chromatisme.md) · [Sommaire du cahier](README.md) · [Enharmonie et modulations éloignées →](36-enharmonie.md)
 
 ## Du piano aux quatre voix
 
@@ -66,4 +66,4 @@ Pour piano (en arpèges) :
 
 ---
 
-[← Le chromatisme](31-le-chromatisme.md) · [Sommaire du cahier](README.md)
+[← Le chromatisme](31-le-chromatisme.md) · [Sommaire du cahier](README.md) · [Enharmonie et modulations éloignées →](36-enharmonie.md)
