@@ -196,5 +196,4 @@ Tous les exemples du cours sont produits par de petits programmes Python :
 
 ## Licence
 
-- **Contenu du cours** (textes, images) : [Creative Commons Attribution – Partage dans les mêmes conditions 4.0 (CC BY-SA 4.0)](https://creativecommons.org/licenses/by-sa/4.0/deed.fr).
-- **Code des outils** : licence MIT (voir [`LICENSE`](LICENSE)).
+- **Tout le projet** (code, textes, exercices, schémas, partitions) : © 2026 Mickael Le Van, **tous droits réservés** (voir [`LICENSE`](LICENSE)). Reproduction, diffusion et usage commercial interdits sans autorisation écrite de l’auteur. Les éléments de tiers cités restent sous leur propre licence.
